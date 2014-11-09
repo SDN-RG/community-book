@@ -1,0 +1,13 @@
+{
+    "name": "Buku-Komunitas-SDN-RG",
+    "version": "0.0.1",
+    "description": "",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SDN-RG/community-book.git"
+    },
+    "author": "EM <eueung@gmail.com>",
+    "dependencies": {
+        "gitbook-plugin-ga": "*"
+    }
+}
