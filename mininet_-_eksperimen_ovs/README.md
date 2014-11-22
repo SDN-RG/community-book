@@ -77,7 +77,7 @@ Flow table di atas terlihat masih kosong. Hal ini dikarenakan kita belum menamba
 
 Untuk menambahkan flow pada switch-1 berdasarkan port yang tersedia, lakukan command di bawah ini
 
-*Add flow at Port 1*
+**Add flow at Port 1**
 
 `sudo ovs-ofctl add-flow s1 in_port=1,action=output:2`
 
