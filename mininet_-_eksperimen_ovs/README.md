@@ -11,6 +11,7 @@ Pada simulasi kali ini dilakukan beberapa kasus flow matching. Yaitu Port based,
 ----------
 
 **PORT BASED FLOW MATCHING (L1)**
+### Port Based 
 
 *Membuat single topologi dengan 3 host tanpa menghubungkan ke controller*
 Pada mesin yang sudah terinstall mininet / VM Mininet yang bisa didownload dari website resmi mininet, lakukan perintah di bawah ini :
@@ -76,7 +77,7 @@ Flow table di atas terlihat masih kosong. Hal ini dikarenakan kita belum menamba
 
 Untuk menambahkan flow pada switch-1 berdasarkan port yang tersedia, lakukan command di bawah ini
 
-##Add flow at Port 1
+*Add flow at Port 1*
 
 `sudo ovs-ofctl add-flow s1 in_port=1,action=output:2`
 
@@ -542,8 +543,10 @@ s1->h1:ARP Reply
 ```
 Terlihat bahwa ICMP Reply sudah bisa diteruskan ke h2
 
+----------
 
 **Flow Matching Based IP (L3)**
+### IP Based Flow Matching
 Selanjutnya, kita akan melakukan flow matching berdasarkan IP Address
 Jangan lupa lakukan `sudo ovs-ofctl del-flows s1` untuk menghapus flow table sebelumnya yang telah dibuat.
 
@@ -660,6 +663,8 @@ s1->h1:ARP Reply
 h1->s1:ARP Reply
 s1-->h2:ARP Reply
 ```
+
+----------
 
 **TRANSPORT BASED FLOW MATCHING WITH SIMPLE HTTP SERVER**
 ### FLow Matching Based on Transport Based
