@@ -2,12 +2,23 @@
 
 *Bagus Aditya, Hamzah U. Mustakim*
 
-##Port-Based
-###Create Single Topology at Mininet
+
+#Macam-macam Flow Matching pada Topologi Mininet Tanpa Controller
+
+Terdapat beberapa macam flow matching yang bisa dilakukan pada mininet. Pada topologi yang akan dibuat, terdapat 3 host dan 1 buah switch ovsk. Kemudian pada switch tersebut ditambahkan flow untuk melakukan komunikasi antar host.
+Pada simulasi kali ini dilakukan beberapa kasus flow matching. Yaitu Port based, MAC Address Based, IP Based, dan Transport Protocol Based pada simple HTTP server.
+
+----------
+
+**PORT BASED FLOW MATCHING (L1)**
+### Port Based 
+
+*Membuat single topologi dengan 3 host tanpa menghubungkan ke controller*
+Pada mesin yang sudah terinstall mininet / VM Mininet yang bisa didownload dari website resmi mininet, lakukan perintah di bawah ini :
 
 `sudo mn --mac --topo single,3 --switch ovsk --controller=remote`
 
-```bash
+```
 *** Creating network
 *** Adding controller
 Unable to contact the remote controller at 127.0.0.1:6633
@@ -25,8 +36,13 @@ s1
 *** Starting CLI:
 ```
 
+Kemudian untuk melihat network interface yang terhubung pada host dan switch dengan command seperti berikut :
+
 `mininet> net`
-```bash
+
+maka muncul tampilan interface network pada tiap node seperti di bawah ini 
+
+```
 h1 h1-eth0:s1-eth1
 h2 h2-eth0:s1-eth2
 h3 h3-eth0:s1-eth3
@@ -34,8 +50,13 @@ s1 lo:  s1-eth1:h1-eth0 s1-eth2:h2-eth0 s1-eth3:h3-eth0
 c0
 ```
 
+Untuk menampilkan informasi pada setiap node yang ada, dengan comand dibawah ini:
+
 `mininet> dump`
-```bash
+
+Maka akan muncul tampilan dibawah ini:
+
+```
 <Host h1: h1-eth0:10.0.0.1 pid=3814>
 <Host h2: h2-eth0:10.0.0.2 pid=3815>
 <Host h3: h3-eth0:10.0.0.3 pid=3816>
@@ -43,26 +64,49 @@ c0
 <RemoteController c0: 127.0.0.1:6633 pid=3807>
 ```
 
+Untuk melihat flow-table pada switch1 gunakan comand seperti dibawah ini:
+
 `sudo ovs-ofctl dump-flows s1`
-```bash
+
+Selanjutnya akan didapat tampilan flow-table seperti dibawah ini.
+
+```
 NXST_FLOW reply (xid=0x4):
 ```
+Flow table di atas terlihat masih kosong. Hal ini dikarenakan kita belum menambahkan flow pada switch1 sehingga antar host belum bisa saling berkomunikasi.
 
+Untuk menambahkan flow pada switch-1 berdasarkan port yang tersedia, lakukan command di bawah ini
 
+**Add flow at Port 1**
 
-###Add flow at Port 1
 `sudo ovs-ofctl add-flow s1 in_port=1,action=output:2`
+
+Command di atas adalah menambahkan flow pada port 1 dengan keluaran pada port 2 pada s1
+
+Kemudian kita bisa melihat flow table yang telah dimasukkan,
+
 `sudo ovs-ofctl dump-flows s1`
-```bash
+
+```
 NXST_FLOW reply (xid=0x4):
  cookie=0x0, duration=3.237s, table=0, n_packets=0, n_bytes=0, idle_age=3, in_port=1 actions=output:2
 ```
 
+*Skenario 1*
+Pada skenario 1 ini kita akan mencoba melakukan tes komunikasi dari host 1 ke host 2 dengan mengirimkan sebuah paket ICMP.
+Lakukan Xterm pada h1,h2, dan h3. Kemudian untuk menampilkan paket yang berada pada eth0-nya kita gunakan command:
+
+pada h1 : `tcpdump -ne -i h1-eth0`
+pada h2 : `tcpdump -ne -i h2-eth0`
+pada h3 : `tcpdump -ne -i h3-eth0`
+
+Kemudian, lakukan ping dari h1 ke h2 :
 
 `h1 ping -c 1 h2`
 
-At h1 `tcpdump -ne -i h1-eth0`
-```bash
+Pada h1 akan didapat dumping paket dibawah ini:
+
+```
 root@mininet-vm:~# tcpdump -ne -i h1-eth0
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on h1-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
@@ -71,8 +115,9 @@ listening on h1-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 06:53:06.724140 00:00:00:00:00:01 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
 ```
 
-At h2 `tcpdump -ne -i h2-eth0`
-```bash
+Selanjutnya kita lihat dumping paket pada h2
+
+```
 root@mininet-vm:~# tcpdump -ne -i h2-eth0
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
@@ -84,94 +129,7 @@ listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 06:53:06.724220 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
 ```
 
-
-`mininet> h2 ping -c 1 h1`
-
-At h1 `tcpdump -ne -i h1-eth0`
-
-
-At h2 `tcpdump -ne -i h2-eth0`
-```bash
-root@mininet-vm:~# tcpdump -ne -i h2-eth0
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
-06:55:54.707010 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 98: 10.0.0.2 > 10.0.0.1: ICMP echo request, id 4210, seq 1, length 64
-06:55:59.720120 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
-06:56:00.720102 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
-06:56:01.721048 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
-
-```
-
-
-###Add Next flow at Port 2:
-
-`sudo ovs-ofctl add-flow s1 in_port=2,action=output:1`
-`sudo ovs-ofctl dump-flows s1`
-```bash
-NXST_FLOW reply (xid=0x4):
- cookie=0x0, duration=376.441s, table=0, n_packets=9, n_bytes=378, idle_age=131, in_port=1 actions=output:2
- cookie=0x0, duration=2.199s, table=0, n_packets=0, n_bytes=0, idle_age=2, in_port=2 actions=output:1
-```
-
-`h1 ping -c 1 h2`
-At h1 `tcpdump -ne -i h1-eth0`
-
-```bash
-root@mininet-vm:~# tcpdump -ne -i h1-eth0
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on h1-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
-06:57:54.375670 00:00:00:00:00:01 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
-06:57:54.377215 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
-06:57:54.377226 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype IPv4 (0x0800), length 98: 10.0.0.1 > 10.0.0.2: ICMP echo request, id 4256, seq 1, length 64
-06:57:54.378185 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 98: 10.0.0.2 > 10.0.0.1: ICMP echo reply, id 4256, seq 1, length 64
-06:57:59.385383 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
-06:57:59.385404 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Reply 10.0.0.1 is-at 00:00:00:00:00:01, length 28
-```
-
-At h2 `tcpdump -ne -i h2-eth0`
-```bash
-root@mininet-vm:~# tcpdump -ne -i h2-eth0
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
-06:57:54.375946 00:00:00:00:00:01 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
-06:57:54.375975 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
-06:57:54.377700 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype IPv4 (0x0800), length 98: 10.0.0.1 > 10.0.0.2: ICMP echo request, id 4256, seq 1, length 64
-06:57:54.377722 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 98: 10.0.0.2 > 10.0.0.1: ICMP echo reply, id 4256, seq 1, length 64
-06:57:59.384967 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
-06:57:59.386119 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Reply 10.0.0.1 is-at 00:00:00:00:00:01, length 28
-```
-
-`h2 ping -c 1 h1`
-`tcpdump -ne -i h1-eth0`
-```bash
-root@mininet-vm:~# tcpdump -ne -i h1-eth0
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on h1-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
-06:59:56.034737 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 98: 10.0.0.2 > 10.0.0.1: ICMP echo request, id 4294, seq 1, length 64
-06:59:56.034764 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype IPv4 (0x0800), length 98: 10.0.0.1 > 10.0.0.2: ICMP echo reply, id 4294, seq 1, length 64
-07:00:01.048952 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
-07:00:01.049462 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
-07:00:01.049477 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Reply 10.0.0.1 is-at 00:00:00:00:00:01, length 28
-07:00:01.050306 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
-```
-
-at h2
-```bash
-root@mininet-vm:~# tcpdump -ne -i h2-eth0
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
-06:59:56.034503 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 98: 10.0.0.2 > 10.0.0.1: ICMP echo request, id 4294, seq 1, length 64
-06:59:56.035333 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype IPv4 (0x0800), length 98: 10.0.0.1 > 10.0.0.2: ICMP echo reply, id 4294, seq 1, length 64
-07:00:01.048925 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
-07:00:01.049321 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
-07:00:01.049349 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
-07:00:01.050253 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Reply 10.0.0.1 is-at 00:00:00:00:00:01, length 28
-```
-
-###Sequence Diagram  Port-Based
-1st Scenario :
-- `h1 ping -c 1 h2`
-- `add-flow s1 in_port=1 action=output:2`
+dari hasil dumping paket pada kedua host di atas, maka bisa dituliskan sequence diagram seperti di bawah ini:
 
 ```sequence
 participant h1
@@ -189,9 +147,25 @@ h2-->s1:ARP Reply
 h2-->s1:ARP Reply
 ```
 
-2nd Scenario :
-- `h2 ping -c 1 h1`
-- `add-flow s1 in_port=1 action=output:2`
+
+
+*Skenario 2*
+Masih menggunakan 1 flow table yang sama, kita lakukan tes komunikasi dari h2 ke h1. Jangan lupa untuk xterm h1,h2 dan h3, kemudian amati paket yang datang dan keluar di setiap interface host dengan melakukan dumping.
+
+`mininet> h2 ping -c 1 h1`
+
+Kita hanya akan menemukan paket ICMP Request dan ARP Request pada h2 saja, seperti yang terlihat di bawah ini :
+```
+root@mininet-vm:~# tcpdump -ne -i h2-eth0
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
+06:55:54.707010 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 98: 10.0.0.2 > 10.0.0.1: ICMP echo request, id 4210, seq 1, length 64
+06:55:59.720120 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
+06:56:00.720102 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
+06:56:01.721048 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
+
+```
+Maka bisa dituliskan sequence diagram seperti di bawah ini :
 
 ```sequence
 participant h1
@@ -203,11 +177,62 @@ h2-->s1:ARP Request
 h2-->s1:ARP Request
 h2-->s1:ARP Request
 ```
+Terlihat s1 belum bisa meneruskan paket dari h2 ke h1. Hal ini dikarenakan kita belum menambahkan flow dari port2 ke port1
 
-1st Scenario :
-- `h1 ping -c 1 h2`
-- `add-flow s1 in_port=1 action=output:2`
-- `add-flow s1 in_port=2,action=output:1`
+*Tahap selanjutnya kita akan menambahkan flow pada port2 ke port1 pada s1*
+
+**Tambahkan flow pada port2 ke port1 pada s1 menggunakan command berikut**
+
+`sudo ovs-ofctl add-flow s1 in_port=2,action=output:1`
+
+Maka untuk mengecek flow table menggunakan command berikut : 
+
+`sudo ovs-ofctl dump-flows s1`
+
+Didapatkan flow table di bawah ini :
+
+```
+NXST_FLOW reply (xid=0x4):
+ cookie=0x0, duration=376.441s, table=0, n_packets=9, n_bytes=378, idle_age=131, in_port=1 actions=output:2
+ cookie=0x0, duration=2.199s, table=0, n_packets=0, n_bytes=0, idle_age=2, in_port=2 actions=output:1
+```
+
+*Skenario 1*
+Sama seperti skenario 1 sebelumnya, kita akan melakukan tes komunikasi antara h1 ke h2. Jangan lupa untuk melakukan xterm h1, h2 , dan h3 untuk mengamati paket yang melewati interface tiap host.
+
+Setelah itu lakukan command ping :
+
+`h1 ping -c 1 h2`
+
+Maka tcpdump pada h1 diperoleh:
+
+```
+root@mininet-vm:~# tcpdump -ne -i h1-eth0
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on h1-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
+06:57:54.375670 00:00:00:00:00:01 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
+06:57:54.377215 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
+06:57:54.377226 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype IPv4 (0x0800), length 98: 10.0.0.1 > 10.0.0.2: ICMP echo request, id 4256, seq 1, length 64
+06:57:54.378185 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 98: 10.0.0.2 > 10.0.0.1: ICMP echo reply, id 4256, seq 1, length 64
+06:57:59.385383 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
+06:57:59.385404 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Reply 10.0.0.1 is-at 00:00:00:00:00:01, length 28
+```
+
+Dan tcpdump pada h2 diperoleh:
+
+```
+root@mininet-vm:~# tcpdump -ne -i h2-eth0
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
+06:57:54.375946 00:00:00:00:00:01 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
+06:57:54.375975 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
+06:57:54.377700 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype IPv4 (0x0800), length 98: 10.0.0.1 > 10.0.0.2: ICMP echo request, id 4256, seq 1, length 64
+06:57:54.377722 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 98: 10.0.0.2 > 10.0.0.1: ICMP echo reply, id 4256, seq 1, length 64
+06:57:59.384967 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
+06:57:59.386119 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Reply 10.0.0.1 is-at 00:00:00:00:00:01, length 28
+```
+
+Kita bisa tuliskan sequence diagram sebagai berikut:
 
 ```sequence
 participant h1
@@ -228,10 +253,41 @@ h1->s1:ARP Reply
 s1-->h2: ARP Reply
 ```
 
-2nd scenario :
-- `h2 ping -c 1 h1`
-- `add-flow s1 in_port=1 action=output:2`
-- `add-flow s1 in_port=2,action=output:1`
+Kita bisa melihat pada sequence diagram di atas, komunikasi sudah bisa terjadi antara h1 dan h2, paket ICMP Reply dari h2 sudah bisa diteruskan ke h1.
+
+*Skenario 2*
+Sama seperti skenario 2 sebelumnya, kita lakukan tes komunikasi dari h2 ke h1:
+
+`h2 ping -c 1 h1`
+
+Pada h1 didapatkan tcpdump berikut :
+```
+root@mininet-vm:~# tcpdump -ne -i h1-eth0
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on h1-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
+06:59:56.034737 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 98: 10.0.0.2 > 10.0.0.1: ICMP echo request, id 4294, seq 1, length 64
+06:59:56.034764 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype IPv4 (0x0800), length 98: 10.0.0.1 > 10.0.0.2: ICMP echo reply, id 4294, seq 1, length 64
+07:00:01.048952 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
+07:00:01.049462 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
+07:00:01.049477 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Reply 10.0.0.1 is-at 00:00:00:00:00:01, length 28
+07:00:01.050306 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
+```
+
+Pada h2 didapatkan tcpdump berikut:
+
+```
+root@mininet-vm:~# tcpdump -ne -i h2-eth0
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
+06:59:56.034503 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 98: 10.0.0.2 > 10.0.0.1: ICMP echo request, id 4294, seq 1, length 64
+06:59:56.035333 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype IPv4 (0x0800), length 98: 10.0.0.1 > 10.0.0.2: ICMP echo reply, id 4294, seq 1, length 64
+07:00:01.048925 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
+07:00:01.049321 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
+07:00:01.049349 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
+07:00:01.050253 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Reply 10.0.0.1 is-at 00:00:00:00:00:01, length 28
+```
+
+Maka dapat dituliskan sequence diagram berikut:
 
 ```sequence
 participant h1
@@ -251,26 +307,274 @@ s1-->h2: ARP Reply
 h2-->s1: ARP Reply
 s1->h1:ARP Reply
 ```
+Tes komunikasi dari h2 ke h1 juga sudah bisa berhasil. ICMP Reply dari h1 sudah bisa diteruskan ke h2.
 
-##IP-Based
-###Adding Flows
-```bash
+----------
+
+
+**MAC BASED FLOW MATCHING (L2)**
+### FLow Matching Based on MAC Address
+Selanjutnya, kita akan melakukan flow matching berdasarkan MAC Address.
+Jangan lupa lakukan `sudo ovs-ofctl del-flows s1` untuk menghapus flow table sebelumnya yang telah dibuat.
+
+Pada percobaan pertama, kita hanya tambahkan flow dari MAC Address h1 ke port2 pada s1
+
+`sudo ovs-ofctl add-flow s1 dl_src=00:00:00:00:00:01,actions=output:2`
+
+Kita bisa lihat hasil flow table dari command di atas :
+`sudo ovs-ofctl dump-flows s1`
+
+```
+NXST_FLOW reply (xid=0x4):
+ cookie=0x0, duration=3.233s, table=0, n_packets=0, n_bytes=0, idle_age=3, dl_src=00:00:00:00:00:01 actions=output:2
+```
+----------
+
+*Skenario 1*
+Pada skenario 1 ini kita akan mencoba melakukan tes komunikasi dari host 1 ke host 2 dengan mengirimkan sebuah paket ICMP.
+Lakukan Xterm pada h1,h2, dan h3. Kemudian untuk menampilkan paket yang berada pada eth0-nya kita gunakan command:
+
+pada h1 : `tcpdump -ne -i h1-eth0`
+pada h2 : `tcpdump -ne -i h2-eth0`
+pada h3 : `tcpdump -ne -i h3-eth0`
+
+Kemudian, lakukan ping dari h1 ke h2 :
+
+`h1 ping -c 1 h2`
+
+Pada h1 akan didapat dumping paket dibawah ini:
+
+```
+root@mininet-vm:~# tcpdump -ne -i h1-eth0
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on h1-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
+17:22:04.953627 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype IPv4 (0x0800), length 98: 10.0.0.1 > 10.0.0.2: ICMP echo request, id 2655, seq 1, length 64
+17:22:09.960860 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
+17:22:10.960859 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
+17:22:11.961977 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
+```
+
+Selanjutnya kita lihat dumping paket pada h2
+
+```
+root@mininet-vm:~# tcpdump -ne -i h2-eth0
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
+17:22:04.954317 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype IPv4 (0x0800), length 98: 10.0.0.1 > 10.0.0.2: ICMP echo request, id 2655, seq 1, length 64
+17:22:04.954365 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 98: 10.0.0.2 > 10.0.0.1: ICMP echo reply, id 2655, seq 1, length 64
+17:22:09.960887 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
+17:22:09.961260 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
+17:22:09.961287 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
+17:22:10.960928 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
+17:22:10.960948 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
+17:22:11.962057 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
+17:22:11.962079 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
+```
+
+Maka dapat dituliskan sequence diagram berikut:
+
+```sequence
+participant h1
+participant s1
+participant h2
+participant h3
+h1->s1:ICMP Request
+h1->s1:ARP Request
+s1-->h2:ARP Request
+h1->s1:ARP Request
+s1-->h2:ARP Request
+h1->s1:ARP Request
+s1-->h2:ARP Request
+s1-->h2:ICMP Request
+h2-->s1:ICMP Reply
+h2-->s1:ARP Reply
+h2-->s1:ARP Reply
+h2-->s1:ARP Reply
+```
+
+*Skenario 2*
+Masih menggunakan 1 flow table yang sama, kita lakukan tes komunikasi dari h2 ke h1. Jangan lupa untuk xterm h1,h2 dan h3, kemudian amati paket yang datang dan keluar di setiap interface host dengan melakukan dumping.
+
+Maka didapatkan dumping paket hanya pada h2 seperti di bawah ini
+```
+root@mininet-vm:~# tcpdump -ne -i h2-eth0
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
+17:23:37.849256 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 98: 10.0.0.2 > 10.0.0.1: ICMP echo request, id 2687, seq 1, length 64
+17:23:42.856869 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
+17:23:43.856866 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
+17:23:44.856858 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
+```
+
+Bisa dituliskan sequence-diagramnya sebagai berikut : 
+
+```sequence
+participant h1
+participant s1
+participant h2
+participant h3
+h2->s1:ICMP Request
+h2-->s1:ARP Request
+h2-->s1:ARP Request
+h2-->s1:ARP Request
+```
+
+
+*Tahap selanjutnya kita akan menambahkan flow pada MAC Address h2 ke port1 pada s1*
+**Tambahkan flow menggunakan command berikut**
+
+`sudo ovs-ofctl add-flow s1 dl_src=00:00:00:00:00:02,actions=output:1`
+
+Maka flow-table menjadi seperti di bawah ini:
+
+```
+sudo ovs-ofctl dump-flows s1
+
+NXST_FLOW reply (xid=0x4):
+ cookie=0x0, duration=3.896s, table=0, n_packets=0, n_bytes=0, idle_age=3, dl_src=00:00:00:00:00:01 actions=output:2
+ cookie=0x0, duration=13.064s, table=0, n_packets=0, n_bytes=0, idle_age=13, dl_src=00:00:00:00:00:02 actions=output:1
+```
+
+*Skenario 1*
+Sama seperti skenario 1 sebelumnya, kita akan melakukan tes komunikasi antara h1 ke h2. Jangan lupa untuk melakukan xterm h1, h2 , dan h3 untuk mengamati paket yang melewati interface tiap host.
+
+Setelah itu lakukan command ping :
+`h1 ping -c 1 h2`
+
+Maka pada h1 didapat paket dumping di bawah ini :
+```
+root@mininet-vm:~# tcpdump -ne -i h1-eth0
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on h1-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
+17:17:24.812247 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype IPv4 (0x0800), length 98: 10.0.0.1 > 10.0.0.2: ICMP echo request, id 2561, seq 1, length 64
+17:17:24.813084 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 98: 10.0.0.2 > 10.0.0.1: ICMP echo reply, id 2561, seq 1, length 64
+17:17:29.817741 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
+17:17:29.818296 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
+17:17:29.818312 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Reply 10.0.0.1 is-at 00:00:00:00:00:01, length 28
+17:17:29.819142 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
+```
+
+Dan pada h2 didapat paket dumping di bawah ini :
+
+```
+root@mininet-vm:~# tcpdump -ne -i h2-eth0
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
+17:17:24.812482 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype IPv4 (0x0800), length 98: 10.0.0.1 > 10.0.0.2: ICMP echo request, id 2561, seq 1, length 64
+17:17:24.812507 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 98: 10.0.0.2 > 10.0.0.1: ICMP echo reply, id 2561, seq 1, length 64
+17:17:29.817770 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
+17:17:29.818108 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
+17:17:29.818164 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
+17:17:29.819058 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Reply 10.0.0.1 is-at 00:00:00:00:00:01, length 28
+```
+
+Maka bisa ditulis sequence-diagram berikut:
+
+```sequence
+participant h1
+participant s1
+participant h2
+participant h3
+h1->s1: ICMP Request
+s1-->h2:ICMP Request
+h2-->s1: ICMP Reply
+s1->h1:ICMP Reply
+h1->s1: ARP Request
+s1-->h2:ARP Request
+h2-->s1:ARP Reply
+s1->h1: ARP Reply
+h2-->s1: ARP Request
+s1->h1:ARP Request
+h1->s1:ARP Reply
+s1-->h2: ARP Reply
+```
+Terlihat ICMP Reply sudah bisa diteruskan ke h1
+
+*Skenario 2*
+Sama seperti skenario 2 sebelumnya, kita lakukan tes komunikasi dari h2 ke h1:
+
+`h2 ping -c 1 h1`
+
+Pada h1 didapat dumping paket berikut :
+```
+root@mininet-vm:~# tcpdump -ne -i h1-eth0
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on h1-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
+17:19:05.147539 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 98: 10.0.0.2 > 10.0.0.1: ICMP echo request, id 2594, seq 1, length 64
+17:19:05.147565 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype IPv4 (0x0800), length 98: 10.0.0.1 > 10.0.0.2: ICMP echo reply, id 2594, seq 1, length 64
+17:19:10.152869 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
+17:19:10.153440 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
+17:19:10.153466 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Reply 10.0.0.1 is-at 00:00:00:00:00:01, length 28
+17:19:10.154335 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
+```
+
+Pada h2 didapat dumping paket berikut :
+```
+root@mininet-vm:~# tcpdump -ne -i h2-eth0
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
+17:19:05.147295 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 98: 10.0.0.2 > 10.0.0.1: ICMP echo request, id 2594, seq 1, length 64
+17:19:05.148178 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype IPv4 (0x0800), length 98: 10.0.0.1 > 10.0.0.2: ICMP echo reply, id 2594, seq 1, length 64
+17:19:10.152841 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
+17:19:10.153258 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.2 tell 10.0.0.1, length 28
+17:19:10.153293 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
+17:19:10.153707 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Reply 10.0.0.1 is-at 00:00:00:00:00:01, length 28
+```
+
+Maka dapat ditulis sequence-diagramnya:
+
+```sequence
+participant h1
+participant s1
+participant h2
+participant h3
+h2-->s1: ICMP Request
+s1->h1:ICMP Request
+h1->s1: ICMP Reply
+s1-->h2:ICMP Reply
+h1->s1:ARP Request
+s1-->h2: ARP Request
+h2-->s1: ARP Request
+s1->h1:ARP Request
+h1->s1:ARP Reply
+s1-->h2: ARP Reply
+h2-->s1: ARP Reply
+s1->h1:ARP Reply
+```
+Terlihat bahwa ICMP Reply sudah bisa diteruskan ke h2
+
+----------
+
+**Flow Matching Based IP (L3)**
+### IP Based Flow Matching
+Selanjutnya, kita akan melakukan flow matching berdasarkan IP Address
+Jangan lupa lakukan `sudo ovs-ofctl del-flows s1` untuk menghapus flow table sebelumnya yang telah dibuat.
+
+Tambahkan flow di bawah ini :
+
+```
 sudo ovs-ofctl add-flow s1 priority=500,dl_type=0x800,nw_src=10.0.0.0/24,nw_dst=10.0.0.0/24,actions=normal
 sudo ovs-ofctl add-flow s1 arp,nw_dst=10.0.0.1,actions=output:1
 sudo ovs-ofctl add-flow s1 arp,nw_dst=10.0.0.2,actions=output:2
 ```
 
-```bash
+Maka akan terlihat flow table di bawah ini :
+
+```
 mininet@mininet-vm:~$ sudo ovs-ofctl dump-flows s1
 NXST_FLOW reply (xid=0x4):
- cookie=0x0, duration=55.291s, table=0, n_packets=8, n_bytes=336, idle_age=12, arp,arp_tpa=10.0.0.2 actions=output:2
- cookie=0x0, duration=59.466s, table=0, n_packets=5, n_bytes=210, idle_age=15, arp,arp_tpa=10.0.0.1 actions=output:1
- cookie=0x0, duration=35.08s, table=0, n_packets=5, n_bytes=490, idle_age=27, priority=500,ip,nw_src=10.0.0.0/24,nw_dst=10.0.0.0/24 actions=NORMAL
+ cookie=0x0, duration=55.291s, table=0, n_packets=0, n_bytes=0, idle_age=12, arp,arp_tpa=10.0.0.2 actions=output:2
+ cookie=0x0, duration=59.466s, table=0, n_packets=0, n_bytes=0, idle_age=15, arp,arp_tpa=10.0.0.1 actions=output:1
+ cookie=0x0, duration=35.08s, table=0, n_packets=0, n_bytes=0, idle_age=27, priority=500,ip,nw_src=10.0.0.0/24,nw_dst=10.0.0.0/24 actions=NORMAL
 ```
+Pada flow table terlihat bahwa pada s1 akan meneruskan paket arp ke h1 pada port1 dan ke h2 pada port2
+dan juga s1 akan bertindak secara normal untuk meneruskan paket dari ip address 10.0.0.0/24 ke 10.0.0.0/24 (melihat berdasarkan ip address)
 
-Display at h1 (`h1 ping -c 1 h2`)
+*Skenario 1*
+`h1 ping -c 1 h2`
 
-```bash
+Maka tampilan dumping paket pada h1 sebagai berikut
+```
 root@mininet-vm:~# tcpdump -ne -i h1-eth0
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on h1-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
@@ -280,8 +584,8 @@ listening on h1-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 08:14:04.858780 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Reply 10.0.0.1 is-at 00:00:00:00:00:01, length 28
 ```
 
-Display at h2 (`h1 ping -c 1 h2`)
-```bash
+Maka tampilan dumping paket pada h2 sebagai berikut
+```
 root@mininet-vm:~# tcpdump -ne -i h2-eth0
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
@@ -290,10 +594,31 @@ listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 08:14:04.858413 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
 08:14:04.859596 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Reply 10.0.0.1 is-at 00:00:00:00:00:01, length 28
 ```
+Maka bisa dituliskan sequence diagram di bawah ini :
 
-Display at h1 (`h2 ping -c 1 h1`)
+```sequence
+participant h1
+participant s1
+participant h2
+participant h3
+h1->s1:ICMP Request
+h1->s1:ARP Request
+h2-->s1:ICMP Reply
+s1->h1:ICMP Reply
+h2-->s1:ARP Request
+s1->h1:ARP Request
+h1->s1:ARP Reply
+s1-->h2:ARP Reply
+```
 
-```bash
+
+
+*Skenario2*
+Kemudian kita akan melakukan tes komunikasi dari h2 ke h1 dengan mengirim sebuah paket ICMP
+`h2 ping -c 1 h1`
+
+Maka hasil dumping paket pada h1 sebagai berikut
+```
 root@mininet-vm:~# tcpdump -ne -i h1-eth0
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on h1-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
@@ -305,8 +630,8 @@ listening on h1-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 08:15:23.851765 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
 ```
 
-Display at h2 (`h2 ping -c 1 h1`)
-```bash
+Dan hasil dumping paket pada h2 sebagai berikut 
+```
 root@mininet-vm:~# tcpdump -ne -i h2-eth0
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
@@ -317,31 +642,59 @@ listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 08:15:23.850830 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
 08:15:23.851181 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype ARP (0x0806), length 42: Reply 10.0.0.1 is-at 00:00:00:00:00:01, length 28
 ```
-###Sequence Diagram  IP-Based
-...
 
-##TCP-Based
-```bash
-sudo ovs-ofctl add-flow s1 arp,actions=normal
-sudo ovs-ofctl add-flow s1 priority=500,dl_type=0x800,nw_proto=6,tp_dst=80,actions=output:1
-sudo ovs-ofctl add-flow s1 priority=800,ip,nw_src=10.0.0.1,actions=normal
+Maka bisa dituliskan sequence diagram di bawah ini :
+
+```sequence
+participant h1
+participant s1
+participant h2
+participant h3
+h2-->s1:ICMP Request
+s1->h1:ICMP Request
+h1->s1:ICMP Reply
+s1-->h2:ICMP Reply
+h2-->s1:ARP Request
+s1->h1:ARP Request
+h1->s1:ARP Request
+s1-->h2:ARP Request
+h2-->s1:ARP Reply
+s1->h1:ARP Reply
+h1->s1:ARP Reply
+s1-->h2:ARP Reply
 ```
-```bash
+
+----------
+
+**TRANSPORT BASED FLOW MATCHING WITH SIMPLE HTTP SERVER**
+### FLow Matching Based on Transport Based
+Selanjutnya, kita akan melakukan flow matching berdasarkan Transport Based dan mencoba mengaplikasikan request paket ke http server yang diinstall di salah satu host.
+Jangan lupa lakukan `sudo ovs-ofctl del-flows s1` untuk menghapus flow table sebelumnya yang telah dibuat.
+
+Menambahkan flow data pada switch dari HTTP server.
+
+`sudo ovs-ofctl add-flow s1 arp,actions=normal`
+`sudo ovs-ofctl add-flow s1 priority=500,dl_type=0x800,nw_proto=6,tp_dst=80,actions=output:1`
+`sudo ovs-ofctl add-flow s1 priority=800,ip,nw_src=10.0.0.1,actions=normal`
+
+
+```
 NXST_FLOW reply (xid=0x4):
  cookie=0x0, duration=336.177s, table=0, n_packets=22, n_bytes=1680, idle_age=168, priority=500,tcp,tp_dst=80 actions=output:1
  cookie=0x0, duration=335.335s, table=0, n_packets=22, n_bytes=3472, idle_age=168, priority=800,ip,nw_src=10.0.0.1 actions=NORMAL
  cookie=0x0, duration=336.237s, table=0, n_packets=0, n_bytes=0, idle_age=336, arp actions=NORMAL
 ```
-```bash
+
+
+ 
 mininet> h1 python -m SimpleHTTPServer 80 &
 mininet> h2 wget -O - h1
 ```
-```bash
 --2014-11-04 08:21:54--  http://10.0.0.1/
 Connecting to 10.0.0.1:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 848 [text/html]
-Saving to: â€˜STDOUTâ€™
+Saving to: ‘STDOUT’
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"><html>
 <title>Directory listing for /</title>
 <body>
@@ -375,8 +728,9 @@ Saving to: â€˜STDOUTâ€™
 2014-11-04 08:21:54 (29.2 MB/s) - written to stdout [848/848]
 ```
 
-Display Xterm at h1
-```bash
+Kemudian didapat hasil dumping paket pada h1
+
+```
 root@mininet-vm:~# tcpdump -ne -i h1-eth0
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on h1-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
@@ -404,8 +758,9 @@ listening on h1-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 08:21:54.845413 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype IPv4 (0x0800), length 66: 10.0.0.1.80 > 10.0.0.2.56089: Flags [.], ack 108, win 57, options [nop,nop,TS val 182112 ecr 182112], length 0
 ```
 
-at h2
-```bash
+Dan juga didapat hasil dumping paket pada h2
+
+```
 root@mininet-vm:~# tcpdump -ne -i h2-eth0
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
@@ -432,9 +787,12 @@ listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 08:21:54.845351 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype IPv4 (0x0800), length 66: 10.0.0.2.56089 > 10.0.0.1.80: Flags [F.], seq 107, ack 1004, win 61, options [nop,nop,TS val 182112 ecr 182111], length 0
 08:21:54.845440 00:00:00:00:00:01 > 00:00:00:00:00:02, ethertype IPv4 (0x0800), length 66: 10.0.0.1.80 > 10.0.0.2.56089: Flags [.], ack 108, win 57, options [nop,nop,TS val 182112 ecr 182112], length 0
 ```
-###Sequence Diagram TCP-Based
 
-`h2 wget -O - h1`
+Maka, dapat dituliskan flow diagramnya
+
+###Sequence Diagram Http Request Protocol TCP Base flow matching
+
+** h2 wget -O - h1 **
 
 ```sequence
 participant h2
