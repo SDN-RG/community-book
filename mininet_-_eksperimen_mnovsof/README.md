@@ -79,6 +79,43 @@ Pada eksperimen ini dibuat 5 *custom topology* yang masing-masingnya dibangun me
 
 ![full_connect_topo](./assets/full_connect_topo.jpg "full_connect_topo.jpg")
 
+**Penjelasan Source Code Mininet Topology**
+
+Berikut ini sedikit penjelasan mengenai *source code* pembentukan topologi pada mininet, berdasarkan topologi yang di *generate* oleh vnd.
+
+![enter image description here](https://lh6.googleusercontent.com/-i5zqRWVBC20/VHYJQl5hKVI/AAAAAAAAADk/Q5S5ezzh3s0/s0/Picture1_topo.png "Picture1_topo.png")
+
+Baris pertama diawali dengan simbol #! yang diikuti oleh *pathname* (/usr/bin/python) dari Python *interpreter* agar *script* Python dapat dieksekusi oleh sistem operasi Unix.
+
+'*Statement from'* pada Python memungkinkan kita meng-*import* atribut secara spesifik dari modul kedalam *namespace* yang digunakan.
+
+![enter image description here](https://lh4.googleusercontent.com/-ardypTdFJKk/VHYLKPJB3EI/AAAAAAAAAEc/CtgwVefB2A4/s0/tabel1_topo.png "tabel1_topo.png")
+
+![enter image description here](https://lh5.googleusercontent.com/GeJLIs7BlBFoz6s_4K2IQElhApfvATSfP69S2UIixQ=s0 "Picture2_topo.png")
+
+def topology() : merupakan sintaks yang digunakan untuk mendefinisikan fungsi ‘topology’ dimana pada akhir namespace, fungsi ini dipanggil melalui sintaks ‘topology()’.
+ 
+net = Mininet ( controller=RemoteController, link=TCLink, switch=OVSkernelSwitch )
+
+•**controller=RemoteController**
+Mendefinisikan controller yang di kontrol diluar Mininet.
+
+•**link=TCLink**
+Menspesifikasikan link sebagai TC yang digunakan untuk memodifikasi parameter link.
+
+•**switch=OVSkernelSwitch**
+Penggunaan OVS (Open v Switch) untuk menyediakan fungsi switching pada lingkungan virtualisasi hardware dan juga mendukung berbagai macam protokol standar pada jaringan komputer.
+
+![enter image description here](https://lh6.googleusercontent.com/-eLkwT-BbITo/VHYL1syls5I/AAAAAAAAAEo/nYs388I6Gc4/s0/tabel2_topo.png "tabel2_topo.png")
+
+![enter image description here](https://lh5.googleusercontent.com/-wlLdjNMhZGg/VHYL_ms0tjI/AAAAAAAAAE0/FC_fC_VRLBE/s0/Picture3_topo.png "Picture3_topo.png")
+
+![enter image description here](https://lh5.googleusercontent.com/-emcGq4dWuCc/VHYMHFHeaFI/AAAAAAAAAFA/gcYpa3JlsjU/s0/Picture4_topo.png "Picture4_topo.png")
+
+Setelah jaringan dibentuk, perintah 'start()' digunakan untuk menjalankannya. Kemudian sistem dapat menjalankan beberapa *task* yang berguna diantaranya melakukan tes *basic connectivity*, *bandwidth test* dan juga menjalankan mininet CLI.
+
+Metode 'net.stop()' dipanggil untuk melakukan *shut down* pada jaringan setelah seluruh tes atau aktivitas yang diinginkan dijalankan.
+
 ##Referensi
 
 1. TBA
