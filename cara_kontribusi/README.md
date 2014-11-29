@@ -17,9 +17,20 @@ Seperti tersurat dalam namanya, *Buku Komunitas SDN-RG* bersifat open-source unt
 
   ![p03](./assets/p03.jpg)
 
-  kalau anda langsung coba tanpa melakukan apa-apa, hasilnya spt di bawah.
+  kalau anda langsung coba tanpa melakukan apa-apa, hasilnya spt berikut:
 
   ![p04](./assets/p04.jpg)
+
+  kalau sudah ada commit baru:
+
+  ![p05](./assets/p05.jpg)
+
+  ![p06](./assets/p06.jpg)
+
+  status dan interface PR di forked-repo:
+
+  ![p07](./assets/p07.jpg)
+
 
 ##Editor
 Walaupun bisa dilakukan manual dengan sembarang text-editor, akan lebih mudah untuk menulis dan melakukan *preview* melalui editor gitbook. Unduh editor untuk sistem operasi yg sesuai di
