@@ -8,6 +8,7 @@
     },
     "author": "EM <eueung@gmail.com>",
     "dependencies": {
-        "gitbook-plugin-ga": "*"
+        "gitbook-plugin-ga": "*",
+        "gitbook-plugin-disqus": "*"
     }
 }
