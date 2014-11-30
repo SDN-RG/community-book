@@ -6,6 +6,7 @@
 * [Pengantar NFV](pengantar_nfv/README.md)
 * [Testbed OF@ITB](testbed_ofitb/README.md)
 * [SDN & IoT](sdn_&_iot/README.md)
+* [Open Network OS - ONOS](open_network_os_-_onos/README.md)
 * [Mininet - Eksperimen Topologi](mininet_-_eksperimen_mnovsof/README.md)
 * [Mininet - Eksperimen OVS](mininet_-_eksperimen_ovs/README.md)
 * [Mininet - Eksperimen Kontroler](mininet_-_eksperimen_kontroler/README.md)
