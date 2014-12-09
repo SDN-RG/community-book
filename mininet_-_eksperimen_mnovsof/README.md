@@ -94,7 +94,7 @@ Baris pertama diawali dengan simbol #! yang diikuti oleh *pathname* (/usr/bin/py
 ![enter image description here](https://lh5.googleusercontent.com/GeJLIs7BlBFoz6s_4K2IQElhApfvATSfP69S2UIixQ=s0 "Picture2_topo.png")
 
 def topology() : merupakan sintaks yang digunakan untuk mendefinisikan fungsi ‘topology’ dimana pada akhir namespace, fungsi ini dipanggil melalui sintaks ‘topology()’.
- 
+
 net = Mininet ( controller=RemoteController, link=TCLink, switch=OVSkernelSwitch )
 
 •**controller=RemoteController**

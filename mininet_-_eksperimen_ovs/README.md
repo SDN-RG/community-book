@@ -11,7 +11,7 @@ Pada simulasi kali ini dilakukan beberapa kasus flow matching. Yaitu Port based,
 ----------
 
 **PORT BASED FLOW MATCHING (L1)**
-### Port Based 
+### Port Based
 
 *Membuat single topologi dengan 3 host tanpa menghubungkan ke controller*
 Pada mesin yang sudah terinstall mininet / VM Mininet yang bisa didownload dari website resmi mininet, lakukan perintah di bawah ini :
@@ -40,7 +40,7 @@ Kemudian untuk melihat network interface yang terhubung pada host dan switch den
 
 `mininet> net`
 
-maka muncul tampilan interface network pada tiap node seperti di bawah ini 
+maka muncul tampilan interface network pada tiap node seperti di bawah ini
 
 ```
 h1 h1-eth0:s1-eth1
@@ -185,7 +185,7 @@ Terlihat s1 belum bisa meneruskan paket dari h2 ke h1. Hal ini dikarenakan kita 
 
 `sudo ovs-ofctl add-flow s1 in_port=2,action=output:1`
 
-Maka untuk mengecek flow table menggunakan command berikut : 
+Maka untuk mengecek flow table menggunakan command berikut :
 
 `sudo ovs-ofctl dump-flows s1`
 
@@ -406,7 +406,7 @@ listening on h2-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 17:23:44.856858 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Request who-has 10.0.0.1 tell 10.0.0.2, length 28
 ```
 
-Bisa dituliskan sequence-diagramnya sebagai berikut : 
+Bisa dituliskan sequence-diagramnya sebagai berikut :
 
 ```sequence
 participant h1
@@ -630,7 +630,7 @@ listening on h1-eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 08:15:23.851765 00:00:00:00:00:02 > 00:00:00:00:00:01, ethertype ARP (0x0806), length 42: Reply 10.0.0.2 is-at 00:00:00:00:00:02, length 28
 ```
 
-Dan hasil dumping paket pada h2 sebagai berikut 
+Dan hasil dumping paket pada h2 sebagai berikut
 ```
 root@mininet-vm:~# tcpdump -ne -i h2-eth0
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
@@ -686,7 +686,7 @@ NXST_FLOW reply (xid=0x4):
 ```
 
 
- 
+
 mininet> h1 python -m SimpleHTTPServer 80 &
 mininet> h2 wget -O - h1
 ```
