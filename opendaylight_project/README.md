@@ -8,7 +8,7 @@ OpenDaylight Project didirikan oleh para pemimpin industri jaringan pada 8 April
 
 OpenDaylight didukung oleh banyak vendor jaringan ternama di dunia, diantaranya Microsoft, IBM, Cisco, Huawei, Ericsson, dan lain-lain. Vendor-vendor yang berkontribusi pada OpenDaylight Project terbagi atas Platinum, Gold, dan Silver Members bergantung pada besar kontribusinya. Beberapa proyek yang termasuk pada OpenDaylight Project yaitu OpenDaylight Controller, OpenDaylight *Virtual Tenant Network* (VTN), Open DOVE, OSCP Project, YANG Tools, LISP Flow Mapping, OVSDB (Open vSwitch Database), dan dlux (openDayLight User eXperience) [5].
 
-![Platinum](./assets/platinum.jpg)
+![Platinum](./assets/platinum.JPG)
 
 
 ## OpenDaylight Controller
