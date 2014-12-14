@@ -1,5 +1,8 @@
-# The OpenDaylight Project
+# Kontroler OpenDaylight
+*Dimas Riswanto*
 
+
+##*OpenDaylight Project*
 ![](./assets/url.jpg)
 
 OpenDaylight Project adalah sebuah proyek *open source* kolaboratif di Linux Foundation yang bertujuan untuk mempercepat adopsi *Software-Defined Networking* (SDN) dan menciptakan pondasi yang solid untuk *Network Function Virtualization* (NFV) dengan pendekatan yang lebih transparan untuk mendorong inovasi baru dan mengurangi risiko. Linux Foundation Collaborative Projects sendiri merupakan proyek perangkat lunak didanai secara independen yang bertujuan untuk memanfaatkan kekuatan pengembangan kolaboratif untuk bahan bakar inovasi di industri dan ekosistem.
@@ -19,10 +22,15 @@ OpenDaylight mengekspos *open northbound API* yang digunakan oleh aplikasi. Open
 *Southbound interface* mampu mendukung beberapa protokol (sebagai plugin terpisah), misalnya OpenFlow 1.0, OpenFlow 1.3, BGP-LS, dll Modul ini terhubung secara dinamis ke dalam *Service Abstraction Layer* (SAL). SAL mengekspos layanan perangkat dengan modul sisi “utara”. SAL juga menentukan bagaimana memenuhi permintaan layanan terlepas dari protokol yang dipakai antara kontroler dengan perangkat jaringan [6].
 
 OpenDaylight Controller dinamai berdasarkan nama-nama elemen pada tabel periodik. Versi pertama dari OpenDaylight yaitu Hydrogen dirilis 10 bulan setelah OpenDaylight Project didirikan. Sekarang, versi kedua yang diberi nama Helium telah beredar dengan menawarkan perbaikan-perbaikan berupa [7]:
-* Peningkatan clustering dan high-availability support untuk kontroler inti.
-* Akuntansi, otorisasi dan autentikasi untuk peningkatan keamanan.
-* Antarmuka pengguna yang baru, yaitu dlux (the openDayLight User eXperience), yang dapat berjalan terpisah dari perangkat lunak OpenDaylight selama ada koneksi IP.
-* Dukungan untuk Apache Karaf container, sehingga memungkinkan operator jaringan untuk menyesuaikan instalasi, hanya menggunakan fitur yang mereka perlukan.
-* Integrasi lebih dalam dengan OpenStack, termasuk perbaikan yang signifikan terhadap proyek Open vSwitch Database (OVSDB), dan pratinjau teknologi fitur OpenStack seperti Security Group, Distributed Virtual Router dan Load Balancing-as-a-Service.
+1. Peningkatan clustering dan high-availability support untuk kontroler inti.
+2. Akuntansi, otorisasi dan autentikasi untuk peningkatan keamanan.
+3. Antarmuka pengguna yang baru, yaitu dlux (the openDayLight User eXperience), yang dapat berjalan terpisah dari perangkat lunak OpenDaylight selama ada koneksi IP.
+4. Dukungan untuk Apache Karaf container, sehingga memungkinkan operator jaringan untuk menyesuaikan instalasi, hanya menggunakan fitur yang mereka perlukan.
+5. Integrasi lebih dalam dengan OpenStack, termasuk perbaikan yang signifikan terhadap proyek Open vSwitch Database (OVSDB), dan pratinjau teknologi fitur OpenStack seperti Security Group, Distributed Virtual Router dan Load Balancing-as-a-Service.
 
 ![Helium](./assets/helium.jpg)
+
+##Referensi
+* [Open Daylight Project](http://www.opendaylight.org)
+* [OpenDaylight User Guide](https://opendaylight.org/sites/opendaylight/files/bk-user-guide.pdf). OpenDaylight Project, San Fransisco, CA, 2014
+* [OpenDaylight COntroller: Helium Release Plan](https://wiki.opendaylight.org/view/Simultaneous_Release:Helium_Release_Plan)
