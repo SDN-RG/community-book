@@ -82,5 +82,6 @@ Saat terdeteksi konflik antara *existing rule* di *aggregate flow table* dan *ca
 
 ---------------------------------------------------
 **Reference :**
+---------------------------------------------------
 P. Porras, S. Shin, V. Yegneswaran, M. Fong, M. Tyson, and G. Gu. *A Security Enforcement Kernel for OpenFlow Networks*. In Proceedings ACM SIGCOMM Workshops on Hot Topics in Software Defined Networking (HotSDN), August 2012
 
