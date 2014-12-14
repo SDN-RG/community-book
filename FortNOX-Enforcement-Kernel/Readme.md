@@ -3,7 +3,9 @@
 *Bagus Aditya*
 
 ---------------------------------------------------
+
 **SDN Security Challenge**
+
 ---------------------------------------------------
 
 SDN memberikan fasilitas pada layer kontrol dengan menyediakan *programmable network* untuk membuat suatu *flow policy* sesuai kemauan. Tantangan keamanan di suatu *programmable network* yang paling utama adalah mendeteksi, efisiensi, dan rekonsiliasi konflik dari *flow rules* yang diakibatkan oleh suatu *Dynamic Open Flow (OF) Application*. *FortNOX* adalah suatu software yang dikembangkan untuk menyediakan *role-based authorization* dan mengatasi kendala keamanan pada *NOX controller* . FortNOX memungkinkan kontroler *NOX* untuk bisa mengetahui adanya kontradiksi pada *flow rule* secara *real time*, dan mengimplementasikan algoritma baru yang lebih baik. 
@@ -25,7 +27,10 @@ FortNOX mengembangkan kemampuan dari *NOX OpenFlow Controller* dengan menyediaka
 Sekali *flow rule* di *insert* ke FortNOX oleh aplikasi *security*, tak satupun aplikasi OF lain, yang dapat *menginsert flow rules* ke jaringan OF yang bertentangan dengan rule tersebut. 
 FortNOX mengatasi *rule conflict* dengan melihat peran otorisasi menggunakan *flow rule* yang telah *digitally signed*, dimana boleh tidaknya aplikasi yang meminta *insert flow rule* nya berdasarkan pada penetapan *privilege* untuk *flow rule* baru.
 
+---------------------------------------------------
+
 **Implementasi FortNOX**
+
 ---------------------------------------------------
 
 ![gambar 2](https://cloud.githubusercontent.com/assets/7939343/5398800/f935cdfe-8197-11e4-950e-8f3b39fecfa8.png)
