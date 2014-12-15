@@ -45,7 +45,7 @@ Dengan adanya software-centrik dari jaringan SDN , fungsi – fungsi dari perang
 
 Pada bagian ini, akan dibahas bagaimana arsitektur dari perangkat CE dan contoh dari koordinasi jaringan berbasiskan SDN
 
-**A.	Persyaratan Home-networking yang Nyaman**
+**A.	Persyaratan Home-networking yang Memuaskan**
 
  **-Ekstensibilitas Perangkat dengan Dataplane yang kaya fitur**
  Digunakan sebuah arsitektur modular untuk meningkatkan ekstensibilitas dari perangkat HomeBox yang berbasiskan software-centric. Komponen software yang terpasang berisikan fungsi dari perangkat yang digunakan. Dataplane maupun forwarding plane dari perangkat homebox mampu memproses paket yang kompleks seperti penyisipan, penghapusan maupun memodifikasi IP header untuk mengintegrasikan beberapa home network.
@@ -112,7 +112,6 @@ Gambar 6 menunjukkan perubahan datarate saat video flow melewati Gateway Homebox
 **4. Kesimpulan** 
 
 Dengan hasil eksperimen yang dilakukan, penggunaan koordinasi yang fleksibel berbasis SDN merupak sebuah solusi yang layak untuk menanggulangi fragmentation challenge pada aplikasi future home networking.
-
 
 
 
