@@ -108,3 +108,8 @@ Gambar 6 menunjukkan perubahan datarate saat video flow melewati Gateway Homebox
 **4. Kesimpulan** 
 
 Dengan hasil eksperimen yang dilakukan, penggunaan koordinasi yang fleksibel berbasis SDN merupak sebuah solusi yang layak untuk menanggulangi fragmentation challenge pada aplikasi future home networking.
+
+
+Oleh : Cokorda Gde Kresna Dhita / 23213355
+Reference : Jinyong Jo et al."Software-defined Home Networking Devices for Multi-home Visual Sharing" 
+Publikasi Paper : IEEE Transactions on Consumer Electronics, Vol. 60, No. 3, August 2014 
