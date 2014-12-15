@@ -3,6 +3,7 @@
 * [Pengantar](README.md)
 * [Pengantar SDN](pengantar_sdn/README.md)
 * [Pengantar OpenStack](pengantar_openstack/README.md)
+   * [Virtualisasi dan Hypervisor](pengantar_openstack/virtualisasi_dan_hipervisor.md)
 * [Pengantar NFV](pengantar_nfv/README.md)
 * [Testbed OF@ITB](testbed_ofitb/README.md)
 * [SDN & IoT](sdn_&_iot/README.md)
