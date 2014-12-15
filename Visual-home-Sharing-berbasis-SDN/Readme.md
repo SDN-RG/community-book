@@ -111,5 +111,7 @@ Dengan hasil eksperimen yang dilakukan, penggunaan koordinasi yang fleksibel ber
 
 
 Oleh : Cokorda Gde Kresna Dhita / 23213355
+
 Reference : Jinyong Jo et al."Software-defined Home Networking Devices for Multi-home Visual Sharing" 
+
 Publikasi Paper : IEEE Transactions on Consumer Electronics, Vol. 60, No. 3, August 2014 
