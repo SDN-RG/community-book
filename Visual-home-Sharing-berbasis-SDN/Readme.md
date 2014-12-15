@@ -1,3 +1,7 @@
+##**Multi-Home Network dan Visual Home Sharing Berbasis SDN**##
+
+*Cokorda Gde Kresna Dhita*
+
 **1. Pendahuluan**
 	
 Saat ini, digital living berkembang pesat seiring dengan berkembangnya perangkat elektronik cerdas yang semakin pesat. Hal tersebut merubah hidup kita pada semua hal, termasuk kehidupan dirumah. Perkembangan Home-networking  kedepan nya akan memungkinkan anggota keluarga untuk mengakses jaringan rumah dari jarak yang jauh sekalipun. Tetapi keanekaragaman perangkat dan protokol yang digunakan oleh masing masing perangkat yang berbeda – beda timbul sebuah tantangan yaitu masalah interoperability. Pengembangan future home networking kedepannya yang memungkinkan untuk akses jaringan dari jarak jauh akan menimbulkan masalah yaitu  fragmentation challenge. 
@@ -9,31 +13,31 @@ Fragmentation challenge tersebut dapat diselesaikan dengan membuat perangkat yan
 Pada gambar 1 diatas, diillustrasikan perangkat – perangkat  Consumer Electronic (CE) dari prototype SDN-enabled untuk melayani aplikasi multihome multimedia. Pada Home Enviroment diperlukan sedikit konfigurasi , akan tetapi didalam dan diluar dari rumah, akan diperlukan banyak konfigurasi pada dari manajemen home networking, karena terdapat berbagai macam perangkat yang terhubung secara kabel maupun nirkabel.
 	Penggunaan perangkat CE (HomeBox dan ControlBox yang ditunjukkan pada gambar 1) memberikan fleksibilitas yang lebih baik pada konfigurasi perangkat  dan packet control dan membebaskan user untuk mengkonfigurasi secara manual berbagai perangkat maupun menginstall aplikasi software untuk memungkinkan interoperabilitas perangkat.
 
-**2. Future – Home Networking Requirment dan Solusinya**
+**2.Persyaratan Aplikasi Future – Home Networking dan Solusinya**
 Future Home-Networking memerlukan beberapa kriteria dalam pengaplikasiannya. Berikut akan dijabarkan mengenai beberapa kriteria yang diperlukan dalam pengaplikasian SDN-enabled home Network :
 
-**A. Functional requirment**
+**A. Syarat Fungsional**
 
 Perangkat CE harus memenuhi persyaratan untuk mengatasi masalah fragmentation challenge dan untuk meningkatkan User Experience (UX) dirumah. Persyaratan tersebut antara lain : 
 
- - **Software centric extensibility with device programming :**
+ - **Ekstensibilitas Software centric dengan pemrograman perangkat :**
 Tantangan manajemen dan interoperabilitas dalam future home environment dapat diatasi dengan memungkinkan perangkat CE untuk dapat diprogram dan dikonfigurasi secara fleksibel. S. Dengan penggunaan software centric programmability, fleksibilitas dari CE dapay dilakukan, dan hal ini berdampak pada peningkatkan kepuasan home user.
 
- - **Flexible coordination of multiple CE devices :** 
+ - **Koordinasi yang Fleksibel dari Beberapa Perangkat:** 
 Berbagai perangkat CE yang terhubung dalam Future Home Network akan menimbulkan pentingnya untuk mengembangkan manajemen jaringan dari perangkat – perangkat tersebut, termasuk konfigurasi perangkat yang simpel. Hal tesebut juga memicu hadirnya aplikasi home network yang belum pernah ada sebelumnya. Oleh karena itu , koordinasi yang fleksibel dari  perangkat CE penting untuk manajemen dan inovasi aplikasi pada perangkat home network.
  
 
- - **Multi-home interconnection with privacy considerations :**
+ - **Interkoneksi Multi-Home dengan Pertimbangan Privasi :**
  Kebutuhan User akan home networking harusnya tidak terbatas pada satu home network, misalkan saat anggota keluarga terpisah untuk bekerja maupun bersekolah diluar lingkungan rumah. Hal tersebut merupakan sebuah tantangan untuk mengintegrasikan beberapa domain home network karena mungkin beberapa home network tersebut memiliki protokol jaringan yang tidak kompatibel dan resource CE yang berbeda beda.Konfigurasi yang tersentralisasi dari perangkat CE dapat menghemat biaya dan waktu  tetapi di saat yang sama terdapat ancaman terhadap privasi karena konfigurasi memerlukan visibilitas dari paket. Jadi menyembunyikan isi paket adalah hal yang harus dilakukan untuk melindungi privasi. Visibilitas paket merepresentasikan informasi raw level packet yang digunakan untuk koordinasi yang tersentralisasi.
 
 **B.	Keuntungan dalam pengaplikasian perangkat  Home CE berbasis SDN**
 
 Dengan adanya software-centric, ekstensibilitas dan fleksibilitas dari SDN-Enabled home CE devices dapat memberikan beberapa keuntungan bagi user , antara lain : 
 
- - 	**Reduction of configuration and maintenance cos**t 
+ - 	**Berkurangnya Biaya Konfigurasi dan Maintenance** 
  Saat ini , perangkat CE harus dipasang, dan dikonfigurasi secara manual. Dengan adanya future home network yang berbasiskan SDN, perangkat CE yang digunakan dapat dikoordinasikan dengan mudah, dalam pemasangan, konfigurasi maupun maintenance dari alat – alat tersebut. Hal ini berdampak pada semakin murahnya biaya untuk pemasangan dan pemeliharaan perangkat.
 
- - **Improved user experience with innovative application :**
+ - **Meningkatnya User Experience dengan Aplikasi yang Inovatif**
 Dengan adanya software-centrik dari jaringan SDN , fungsi – fungsi dari perangkat CE dapat dikonfigurasi sesuai dengan keinginan user. Selain itu, perangkat CE dapat terinterkoneksi ntuk meningkatkan keamanan, performa, maupun adaptasi multimedia. Sebagai contoh, fungsi keamanan pada home gateway dapat dipisahkan dan dipasang pada perangkat CE untuk memastikan keamanan user.
 
 
@@ -41,15 +45,15 @@ Dengan adanya software-centrik dari jaringan SDN , fungsi – fungsi dari perang
 
 Pada bagian ini, akan dibahas bagaimana arsitektur dari perangkat CE dan contoh dari koordinasi jaringan berbasiskan SDN
 
-**A.	Satisfying Home-networking Requirment**
+**A.	Persyaratan Home-networking yang Nyaman**
 
- **-Device extensibility and a rich-featured dataplane**
+ **-Ekstensibilitas Perangkat dengan Dataplane yang kaya fitur**
  Digunakan sebuah arsitektur modular untuk meningkatkan ekstensibilitas dari perangkat HomeBox yang berbasiskan software-centric. Komponen software yang terpasang berisikan fungsi dari perangkat yang digunakan. Dataplane maupun forwarding plane dari perangkat homebox mampu memproses paket yang kompleks seperti penyisipan, penghapusan maupun memodifikasi IP header untuk mengintegrasikan beberapa home network.
 
- **-Preference based home networking** 
+ **-Home Networking Sesuai dengan Keinginan** 
  Jaringan untuk home application dapat dijalankan sesuai dengan keinginan dari user untuk meningkatkan user experience pada extended home network. Penggunaan SDN mampu menyederhanakan paket flow pada jaringan sesuai dengan keinginan user. Interface antara user dengan perangkat CE disediakan oleh sebuah pesan, yaitu Application description (AD) message.
 
-**- Multihome Interconnection without packet visibility**
+**- Interkoneksi Multi-Home tanpa Visibilitas Paket**
 Untuk menangkal permasalahan pada privasi paket menuju ControlBox, digunakan SDN-based two tier messaging yang di sediakan oleh pihak ketiga yang bisa dipercaya. Informasi mentah dari setiap paket IP pada home network hanya boleh dibuka pada perangkat homebox yang ada pada jaringan yang sama.
 
 
@@ -110,8 +114,7 @@ Gambar 6 menunjukkan perubahan datarate saat video flow melewati Gateway Homebox
 Dengan hasil eksperimen yang dilakukan, penggunaan koordinasi yang fleksibel berbasis SDN merupak sebuah solusi yang layak untuk menanggulangi fragmentation challenge pada aplikasi future home networking.
 
 
-Oleh : Cokorda Gde Kresna Dhita / 23213355
 
-Reference : Jinyong Jo et al."Software-defined Home Networking Devices for Multi-home Visual Sharing" 
 
-Publikasi Paper : IEEE Transactions on Consumer Electronics, Vol. 60, No. 3, August 2014 
+**Reference** : Software-defined Home Networking Devices for Multi-home Visual Sharing, Jinyong Jo et al, August 2014
+
