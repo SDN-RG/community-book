@@ -1,16 +1,6 @@
 ##SDN integration in LTE mobile backhaul network ##
-*Paper* asli oleh 
 
-Jose Costa-Requena
-Departement of Communication and Networking, Aalto University, Finland
- 
-Dipublikasikan pada 
-International Conference Information Networking (ICOIN), 2014
-Dan dipublikasikan oleh IEEE
-  
-Direview oleh  
-Siti Amatullah Karimah
-Institut Teknologi Bandung, 2014
+ *Siti Amatullah Karimah*
 
 **Abstrak**
 Tantangan utama pada jaringan mobile masa depan ialah bagaimana meningkatkan *throughput* dalam mendukung meningkatnya trafik jaringan. Software Defined Network merupakan teknologi baru yang diharapkan dapat mengatasi permasalah tersebut, namun sejauh ini SDN hanya di integrasikan pada arsitektur jaringan 4G, tanpa adanya perubahan mendasar. Dalam paper ini dijabarkan mengenai jaringan mobile 4G dimana pendekatan Software Defined Network dapat digunakan untuk mendesain ulang arsitektur saat ini. Dalam paper ini dibahas didalamnya jalur migrasi yang dapat digunakan untuk menjamin terjadinya fase transisi tersebut. Tujuannya bukanlah untuk jangka pendek namun untuk memenuhi kebutuhan *throughput* masa depan dengan membenahi jaringan transport pada *mobile backhaul* dan memindahkan sebagian besar elemen jaringan LTE saat ini ke *cloud*. Pendekatan ini akan menghilangkan adanya *core network* yang dikenal saat ini dan menggantikannya dengan menyederhanakan jaringan akses yang dibentuk oleh *base station* (eNodeB) yang saling terhubung melelui jaringan *backhaul* yang dikendalikan oleh SDN *switch* yang berada di *cloud* yang bekerja bersama dengan elemen jaringan LTE lainnya.
@@ -139,3 +129,9 @@ Arsitektur ini mengizinkan penggunaan 802.1ad untuk tiap *access network* dalam 
 **V.	Conclusions**
 
 Paper ini memaparkan integrasi antara teknologi LTE dengan SDN dengan membuat penggabungan fungsionalitas antara MME dengan SDN *controller*. Hal ini mengenalkan arsitektur baru dimana jaringan transport akan disederhanakan dan akan berbasis *switch.* *Control plane* pun akan disederhanakan dengan melakukan penggabungan elemen jaringan LTE seperti MME, S/P-GW  yang digabungkan ke dalam satu komponen jaringan. Selain itu, elemen jaringan LTE baru ini, dimana terdapat fungsi SDN *controller* didalamnya dapat di virtualisasikan dan beberapa *instance* nya dapat di diambil oleh *data center* untuk melakukan penyederhanaan pada *data plane.* Pengimplementasian sistem ini telah diuji cobakan dimana *source code* yang digunakan akan tersedia untuk pengembangan selanjutnya. Hasil dari uji coba menunjukkan kecocokan pengintegrasian elemen jaringan LTE dengan SDN *controller* yang dijalankan diatas *cloud* dapat meningkatkan *throughput* setelah mengurangi adanya *overhead* dan mencegah terjadinya fragmentasi ketika GTP-U dihilangkan dari *user plane* antara eNodeB dan S/P-GW.
+
+
+**REFERENSI**
+---------
+
+Costa-Requena, J. , SDN integration in LTE mobile backhaul network, IEEE International Conference Information Networking (ICOIN), Phuket 2014
