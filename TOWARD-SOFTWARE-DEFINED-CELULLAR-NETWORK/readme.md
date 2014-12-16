@@ -54,3 +54,5 @@ Keempat ekstensi tersebut adalah:
 2. Aplikasi Switch : Local control agent.
 3. Perangkat Switch : Memproses dan melakukan klasifikasi paket data secara flesibel berdasarkan header.
 4. Base Station : BTS harus mendukung remote control untuk mengatur alokasi sumber daya pada jaringan virtual serta  berfungsi untuk manajemen cell secara fleksibel.
+
+Sumber: E. Li et al.., “Toward Software-Defined Cellular Networks,” Proc. EWSDN, Darmstadt, Germany, 2012.
