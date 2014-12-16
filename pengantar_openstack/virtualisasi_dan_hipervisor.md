@@ -27,8 +27,46 @@ Ring yang lain tidak dapat menjalankan perintah-perintah untuk mengakses memori 
 
 Idealnya virtualisasi dapat dilakukan dengan mudah dengan cara menempatkan hypervisor pada Ring 0 dan OS minimal di Ring 1. Akan tetapi OS perlu mengakses memori dan perangkat keras lainnya secara langsung. Dalam kondisi biasa OS menempati Ring 0 dan tidak ada masalah. Bila OS harus digeser ke Ring 1 maka timbul masalah akses. Sehingga tantangan terbesar virtualisasi dalam keluarga komputer yang berarsitektur x86 adalah bagaimana membuat sebuah hypervisor yang dapat dijalankan di Ring 0 akan tetapi tidak menghalangi akses dari OS yang digeser dari Ring 0 ke Ring 1.
 
-Ada beberapa cara yang dilakukan untuk mewujudkan hal tersebut yang mengakibatkan pada akhirnya muncul beberapa jenis hypervisor juga. Implikasinya ada tiga macam teknolog virtualisasi yang saat ini bersaing di pasar, yaitu :
-* **Full Virtualisasi** dengan cara translasi secara biner
+Ada beberapa cara yang dilakukan untuk mewujudkan hal tersebut yang mengakibatkan pada akhirnya muncul beberapa jenis hypervisor juga. Implikasinya ada tiga macam teknologi virtualisasi yang saat ini bersaing di pasar, yaitu :
+* **Virtualisasi Total** dengan cara translasi biner
 * **Paravirtualisasi** dengan modifikasi OS
 * **Virtualisasi** dengan bantuan perangkat keras.
+
+#### Virtualisasi Total dengan cara translasi biner
+virtualisasi total sementara ini adalah cara virtualisasi yang paling sulit. Implementasinya adalah dengan membuat hypervisor yang beroperasi di Ring 0 dan menggeser OS ke Ring 1. Setiap perintah yang mengakses memori atau perangkat keras lainnya yang dijalankan di Ring 1 dihadang terlebih dahulu agar supaya tidak menimbulkan "error" dengan cara ditranslasikan menjadi perintah yang efeknya sama seperti yang dikehendaki tetapi dijalankan oleh hypervisor yang berada di Ring 0.
+Sementara itu aplikasi yang dijalankan di Ring 3 karena tidak mengandung perintah yang mengakses memori atau hardware secara langsung dapat dieksekusi langsung tanpa interverensi dari hypervisor. Bagannya dapat dilihat seperti di bawah ini :
+
+![Full Virtualization](./assets/x86arc1.png)
+
+Keunggulan utama teknologi ini adalah tidak perlu ada perubahan pada guest OS dan dapat dijalankan di semua jenis prosesor x86 tanpa perlu fitur khusus.
+
+Contoh implementasi dari teknologi ini adalah pada hypervisor vMWare ESX dan Microsoft Virtual Server.
+
+#### Paravirtualisasi
+Berbeda dengan virtualisasi total yang tidak memerlukan perubahan pada *guest OS* maka pada paravirtualisasi teknologi hypervisor yang diimplementasikan adalah dengan cara mengubah kernel dari *guest OS* menjadi kernel yang memahami virtualisasi. Hal ini dilakukan dengan mengubah perintah-perintah yang mengakses memori dan perangkat keras secara langsung menjadi sebuah ***hypercall*** yaitu perintah yang mengakses hypervisor (*virtualization layer*) yang mengatur implementasi virtualisasi.
+
+Karena teknologi ini perlu mengubah kernel *guest os* maka pada awalnya paravirtualisasi tidak dapat menjalankan Windows sebagai *guest OS*, karena Windows adalah OS yang tidak *open source*. Bagan dari paravirtualisasi dapat dilihat pada gambar di bawah ini :
+
+![Paravirtualization](./assets/x86arc2.png)
+
+Teknologi paravirtualisasi ini kita jumpai pada [xen](http://www.xenproject.org) yang antara lain dipergunakan oleh Oracle VM Server dan Citrix Xen Server. Untuk mengatasi kendala menjalankan Windows sebagai *guest os* maka akhir-akhir ini xen mengadopsi juga teknologi virtualisasi dengan bantuan perangkat keras sebagai bagian dari teknologi paravirtualisasinya.
+
+Kelebihan utama dari teknologi paravirtualisasi ini adalah mengubah kernel *guest os* lebih mudah daripada membuat translasi biner seperti pada teknologi virtualisasi total, selain itu perbedaan unjuk kerja dari mesin virtual dan tidak sangat kecil (hampir tidak ada perbedaan).
+
+#### Virtualisasi dengan bantuan perangkat keras
+Ini adalah teknologi virtualisasi yang baru saja dikembangkan semenjak hadirnya processor yang memiliki kemampuan atau dukungan terhadap teknologi virtualisasi seperti teknologi **VT-x** pada prosesor Intel atau teknologi **AMD-V** pada prosesor AMD.
+
+Dukungan dari prosesor terhadap teknologi virtualisasi ini adalah pengambilalihan tugas menghadang perintah-perintah yang mengakses memori atau perangkat keras secara langsung yang dilakukan pada teknologi virtualisasi total dengan implementasi melalui software menjadi salah satu fitur perangkat keras hardware. Bagan nya dapat dilihat seperti berikut :
+
+![Hardware Asisted](./assets/x86arc3.png)
+
+Dengan demikian tidak diperlukan lagi translasi biner atau perubahan pada kernel *guest os*. Fitur dukungan hardware dari prosesor ini menjadi tumpuan bagi tumbuh dan berkembangnya teknologi virtualisasi di masa depan.
+
+Di awal perkembangannya unjuk kerja dari teknologi virtualisasi dengan bantuan perangkat keras ini memang masih belum sempurna yaitu dalam hal unjuk kerjanya masih belum mampu melebihi teknologi virtualisasi total, namun kita berharap ke depan secara berangsur-angsur hal tersebut akan menjadi lebih baik mengingat bahwa secara teknologi fitur ini adalah yang paling ideal dalam mendukung teknologi virtualisasi.
+
+Satu hal yang paling menggembirakan dengan teknologi virtualisasi dengan dukungan hardware ini adalah munculnya hypervisor yang berkode sumber terbuka secara total yaitu **[kvm](http://www.linux-kvm.org)** sehingga membuka kemungkinan bagi semakin cepatnya teknologi virtualisasi ini akan berkembang. **KVM** adalah hypervisor yang paling dominan dalam lingkungan OpenStack.
+
+### Referensi
+1. [Understanding Full Virtualization, Paravirtualization, and Hardware Assists](http://www.vmware.com/resources/techresources/1008), vMWare Technical Paper
+2. [Virtualization](http://en.wikipedia.org/wiki/Virtualization), Wikipedia
 
