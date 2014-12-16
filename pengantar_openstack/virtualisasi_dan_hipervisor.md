@@ -41,3 +41,15 @@ Sementara itu aplikasi yang dijalankan di Ring 3 karena tidak mengandung perinta
 Keunggulan utama teknologi ini adalah tidak perlu ada perubahan pada guest OS dan dapat dijalankan di semua jenis prosesor x86 tanpa perlu fitur khusus.
 
 Contoh implementasi dari teknologi ini adalah pada hypervisor vMWare ESX dan Microsoft Virtual Server.
+
+#### Paravirtualisasi
+Berbeda dengan virtualisasi total yang tidak memerlukan perubahan pada *guest OS* maka pada paravirtualisasi teknologi hypervisor yang diimplementasikan adalah dengan cara mengubah kernel dari *guest OS* menjadi kernel yang memahami virtualisasi. Hal ini dilakukan dengan mengubah perintah-perintah yang mengakses memori dan perangkat keras secara langsung menjadi sebuah ***hypercall*** yaitu perintah yang mengakses hypervisor (*virtualization layer*) yang mengatur implementasi virtualisasi.
+
+Karena teknologi ini perlu mengubah kernel *guest os* maka pada awalnya paravirtualisasi tidak dapat menjalankan Windows sebagai *guest OS*, karena Windows adalah OS yang tidak *open source*. Bagan dari paravirtualisasi dapat dilihat pada gambar di bawah ini :
+
+![Paravirtualization](./assets/x86arc2.png)
+
+Teknologi paravirtualisasi ini kita jumpai pada [xen](http://www.xenproject.org) yang antara lain dipergunakan oleh Oracle VM Server dan Citrix Xen Server. Untuk mengatasi kendala menjalankan Windows sebagai *guest os* maka akhir-akhir ini xen mengadopsi juga teknologi virtualisasi dengan bantuan perangkat keras sebagai bagian dari teknologi paravirtualisasinya.
+
+Kelebihan utama dari teknologi paravirtualisasi ini adalah mengubah kernel *guest os* lebih mudah daripada membuat translasi biner seperti pada teknologi virtualisasi total, selain itu perbedaan unjuk kerja dari mesin virtual dan tidak sangat kecil (hampir tidak ada perbedaan).
+
