@@ -53,3 +53,20 @@ Teknologi paravirtualisasi ini kita jumpai pada [xen](http://www.xenproject.org)
 
 Kelebihan utama dari teknologi paravirtualisasi ini adalah mengubah kernel *guest os* lebih mudah daripada membuat translasi biner seperti pada teknologi virtualisasi total, selain itu perbedaan unjuk kerja dari mesin virtual dan tidak sangat kecil (hampir tidak ada perbedaan).
 
+#### Virtualisasi dengan bantuan perangkat keras
+Ini adalah teknologi virtualisasi yang baru saja dikembangkan semenjak hadirnya processor yang memiliki kemampuan atau dukungan terhadap teknologi virtualisasi seperti teknologi **VT-x** pada prosesor Intel atau teknologi **AMD-V** pada prosesor AMD.
+
+Dukungan dari prosesor terhadap teknologi virtualisasi ini adalah pengambilalihan tugas menghadang perintah-perintah yang mengakses memori atau perangkat keras secara langsung yang dilakukan pada teknologi virtualisasi total dengan implementasi melalui software menjadi salah satu fitur perangkat keras hardware. Bagan nya dapat dilihat seperti berikut :
+
+![Hardware Asisted](./assets/x86arc3.png)
+
+Dengan demikian tidak diperlukan lagi translasi biner atau perubahan pada kernel *guest os*. Fitur dukungan hardware dari prosesor ini menjadi tumpuan bagi tumbuh dan berkembangnya teknologi virtualisasi di masa depan.
+
+Di awal perkembangannya unjuk kerja dari teknologi virtualisasi dengan bantuan perangkat keras ini memang masih belum sempurna yaitu dalam hal unjuk kerjanya masih belum mampu melebihi teknologi virtualisasi total, namun kita berharap ke depan secara berangsur-angsur hal tersebut akan menjadi lebih baik mengingat bahwa secara teknologi fitur ini adalah yang paling ideal dalam mendukung teknologi virtualisasi.
+
+Satu hal yang paling menggembirakan dengan teknologi virtualisasi dengan dukungan hardware ini adalah munculnya hypervisor yang berkode sumber terbuka secara total yaitu **[kvm](http://www.linux-kvm.org)** sehingga membuka kemungkinan bagi semakin cepatnya teknologi virtualisasi ini akan berkembang. **KVM** adalah hypervisor yang paling dominan dalam lingkungan OpenStack.
+
+### Referensi
+1. [Understanding Full Virtualization, Paravirtualization, and Hardware Assists](http://www.vmware.com/resources/techresources/1008), vMWare Technical Paper
+2. [Virtualization](http://en.wikipedia.org/wiki/Virtualization), Wikipedia
+
