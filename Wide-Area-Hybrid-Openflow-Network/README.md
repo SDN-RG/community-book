@@ -114,7 +114,9 @@ Berikut adalah gambar topologi RISE yang dibangun diatas *testbed* JGN-X, gambar
 ![Topologi RISE](http://i57.tinypic.com/2qun5w0.jpg)
 
 
-**VI. Kesimpulan**
+V. Kesimpulan
+--------------------------
+
 
 Dalam paper ini dikemukakan design, teknologi dan pengembangan RISE,  wide area OpenFlow network testbed
 Pengembangan testbed selanjutnya :
@@ -125,7 +127,8 @@ Pengembangan testbed selanjutnya :
  - OpenFlow testbed inter-connections
 
 
-**Referensi**
+VI. Referensi 
+--------------------------
 
-Yoshihiko Kanaumi, Shu-ichi Saito, Eiji Kawai, Deployment and Operation of Wide-area hybrid Openflow Networks, IEEE/IFIP 4th Workshop on Management of the Future Internet, Maui 2012
+[Yoshihiko Kanaumi, Shu-ichi Saito, Eiji Kawai, "*Deployment and Operation of Wide-area hybrid Openflow Networks*", in IEEE/IFIP 4th Workshop on Management of the Future Internet, 2012](http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6212040)
  
