@@ -122,9 +122,9 @@ Dalam paper ini dikemukakan design, teknologi dan pengembangan RISE,  wide area 
 Pengembangan testbed selanjutnya :
    
 
- - Penggunaan MPLS untuk teknologi Tunneling di WAN.
- - Peningkatan Penggunaan dari masing-masing slices
- - OpenFlow testbed inter-connections
+ - Penggunaan MPLS untuk teknologi *Tunneling* di WAN.
+ - Peningkatan Penggunaan dari masing-masing *slices* jaringan SDN.
+ - OpenFlow *testbed inter-connections*.
 
 
 VI. Referensi 
