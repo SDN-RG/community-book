@@ -1,20 +1,21 @@
-Resume paper 
-
 TOWARD SOFTWARE-DEFINED CELULLAR NETWORK
-==========================
-by: Li Erran Li, Z. Moreley Mao, &  Jennifer Rexford
 -----------------------------
+**by: Li Erran Li, Z. Moreley Mao, &  Jennifer Rexford**
 
-Hamzah U. Mustakim – 23213367
 
+*Hamzah U. Mustakim*
 
-Pertumbuhan pesat pengguna smart-phone dan tablet diikuti juga oleh perkembangan jaringan seluler. Insfraksttuktur jaringan yang luas dan bentuk topologi yang kompleks memiliki beberapa kendala dalam proses konfigurasi setiap perangkat yang digunakan, karena menggunakan perangkat dari vendor yang berbeda,  sehingga menjadi kurang fleksibel pada proses operasional. Penerapan SDN (Software Difined Network) pada jaringan seluler dapat menyederhanakan desain topologi dan pengelolaan insfrakstuktur jaringan seluler. Selain itu juga memungkinkan operator untuk menambahkan layanan baru kepada pelanggan.
+**1. Pendahuluan**
+
+Pertumbuhan pesat pengguna *smart-phone* dan tablet diikuti juga oleh perkembangan jaringan seluler. Insfraksttuktur jaringan yang luas dan bentuk topologi yang kompleks memiliki beberapa kendala dalam proses konfigurasi setiap perangkat yang digunakan, karena menggunakan perangkat dari vendor yang berbeda,  sehingga menjadi kurang fleksibel pada proses operasional. Penerapan SDN (*Software Difined Network*) pada jaringan seluler dapat menyederhanakan desain topologi dan pengelolaan insfrakstuktur jaringan seluler. Selain itu juga memungkinkan operator untuk menambahkan layanan baru kepada pelanggan.
+
+**2. Implementasi**
 
 Konsep SDN yang dipaparkan pada paper ini adalah dengan menambahkan kontroler, switch, dan base-station yang dapat mengoperasikan aplikasi kontroler dengan fungsi sebagai berikut:
 Mendefinisikan kebijakan dan aturan berdasarkan atribut / identitas pelanggan daripada alamat dan lokasi  pelanggan.
-Melakukan proses kontrol secara real-time melalui local switch agent.
+Melakukan proses kontrol secara *real-time* melalui local *switch agent*.
 Melakukan pemeriksaan terhadap setiap paket data dan header  secara mendalam.
-Mengelola pembagian pada alokasi sumber daya base-station  secara remote.
+Mengelola pembagian pada alokasi sumber daya *base-station*  secara *remote*.
 
 ![enter image description here](https://lh6.googleusercontent.com/-1iOVFkwrZJ8/VI_Ghp4kJ7I/AAAAAAAAAM4/IVDB3OkqIco/s0/Capture1.JPG "Capture1.JPG")
 
@@ -23,9 +24,9 @@ Mengelola pembagian pada alokasi sumber daya base-station  secara remote.
 
 Pada arsitertur jaringan LTE (gambar 1) terdapat beberapa bagian (node) yang memiliki control plane dan data plane dengan fungsi tertentu. Diantara bagian-bagian  tersebut adalah:
 
-1. Base-station (eNodeB): berfungsi menghubungkan UE (user equipment) pada jaringan LTE dan meneruskan paket data dari UE kepada jaringan dan sebaliknya.
-2. S-GW (Serving Gateway) : sebagai pusat mobilitas UE. Bagian ini selalu memonitor pergerakan UE serta bertugas mengalokasikan frekuensi dan alamat IP.
-3. P-GW (Paket Data Gateway) : berfungsi mengatur parameter QoS dan memonitor trafik data yang masuk pada jaringan. Selain itu juga bertugas untuk mengubungkan UE kepada jaringan internet dan jaringan seluler yang lain.
+1. *Base-station (eNodeB)*: berfungsi menghubungkan UE (*user equipment*) pada jaringan LTE dan meneruskan paket data dari UE kepada jaringan dan sebaliknya.
+2. *S-GW (Serving Gateway)* : sebagai pusat mobilitas UE. Bagian ini selalu memonitor pergerakan UE serta bertugas mengalokasikan frekuensi dan alamat IP.
+3. *P-GW (Paket Data Gateway)* : berfungsi mengatur parameter QoS dan memonitor trafik data yang masuk pada jaringan. Selain itu juga bertugas untuk mengubungkan UE kepada jaringan internet dan jaringan seluler yang lain.
 
 Secara sederhana jaringan LTE dapat disederhanakan seperti  gambar dibawah ini (gambar 2) :
  
@@ -51,8 +52,16 @@ Dibutuhkan empat ekstensi utama  yang perlu  ditambahan pada jaringan seluler un
 Keempat ekstensi tersebut adalah:
 
 1. Kontroler : Membuat parameter aturan dan kebijakan dalam hal atribut pelanggan.
-2. Aplikasi Switch : Local control agent.
+2. Aplikasi Switch : *Local control agent*.
 3. Perangkat Switch : Memproses dan melakukan klasifikasi paket data secara flesibel berdasarkan header.
-4. Base Station : BTS harus mendukung remote control untuk mengatur alokasi sumber daya pada jaringan virtual serta  berfungsi untuk manajemen cell secara fleksibel.
+4. Base Station : BTS harus mendukung *remote control* untuk mengatur alokasi sumber daya pada jaringan virtual serta  berfungsi untuk manajemen cell secara fleksibel.
 
-Sumber: E. Li et al.., “Toward Software-Defined Cellular Networks,” Proc. EWSDN, Darmstadt, Germany, 2012.
+**3. Kesimpulan**
+
+Teknolologi SDN dapat membuat jaringan seluler yang kompleks menjadi lebih sederhana dan lebih mudah untuk diatur. Selain itu juga akan memberikan peluang kepada operator untuk membuat berbagai layanan baru kepada pelanggan yang dapat dioperasikan pada jenis jaringan nirkabel yang lain.
+
+
+
+**4. Referensi**
+
+E. Li et al.., “Toward Software-Defined Cellular Networks,” Proc. EWSDN, Darmstadt, Germany, 2012.
