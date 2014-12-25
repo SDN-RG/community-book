@@ -8,5 +8,7 @@ FlowVisor dapat digambarkan sebagai OpenFlow controller dengan spesial fungsi ya
 
 Salah satu pentingnya fungsi dari FlowVisor yaitu memaksa setiap potongan (slice) tersebut terisolasi, sehingga tidak bisa saling mempengaruhi seperti controller dari slice satu tidak bisa mengontrol trafik dari slice yang lainnya.
 
+## Referensi
+
 1. [FlowVisor: A Network Virtualization Layer](http://archive.openflow.org/downloads/technicalreports/openflow-tr-2009-1-flowvisor.pdf), OpenFlow Consortium, October, 2009
 2. [FlowVisor Wiki](https://github.com/OPENNETWORKINGLAB/flowvisor/wiki), OpenNetworkingLab, June, 2013
