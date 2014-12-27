@@ -70,7 +70,7 @@ Pada paper ini disebut suatu istilah yaitu *Existing virtual network*(EVN) untuk
 ![Tunnels no MAC address learning](http://i62.tinypic.com/350vz7n.jpg)
 OpenFlow *packet* kemudian diberi identitas *tunnel* dengan tiga kemungkinan cara seperti terlihat pada gambar dibawah ini.
 
-	![Tunneling di testbed](http://i59.tinypic.com/2rc03ft.jpg)
+![Tunneling di testbed](http://i59.tinypic.com/2rc03ft.jpg)
 
  - *Wide area Ethernet*
 Ada berbagai macam teknik untuk menerapkan teknologi wide area ethernet, yaitu:
@@ -96,7 +96,7 @@ IV. Desain dan deployment RISE
  - Desain RISE
 Teknologi Ethernet untuk EVN, menggunakan Q-in-Q, 1 vlan untuk mengidentifikasi *users ports* dan satu lagi untuk mengidentifikasi *tunnel* ID antara 1 buah OpenFlow *switch* ke EVN *switch*.
 
-	![Desain RISE](http://i60.tinypic.com/3509tvr.jpg)
+![Desain RISE](http://i60.tinypic.com/3509tvr.jpg)
 	
 
  - Arsitektur dasar RISE
