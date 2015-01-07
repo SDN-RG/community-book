@@ -274,9 +274,12 @@ B. Firmware openwrt dengan custom package openflow (Pantou/CPqD) / Open vSwtich 
 
 
 ###Langkah-langkah pemasangan firmware openwrt
+![Upgrade Firmware](https://lh4.googleusercontent.com/-YGCDaf1Qtwk/VKz3Mb9neKI/AAAAAAAAAPQ/q16uMgsSVHU/w978-h550-no/1043ND%2BPantou%2BUpgrade.png)
 Masuk ke alamat pengaturan wireless router anda, biasanya alamat pengaturan 192.168.0.1 dengan username admin password admin. Pilih menu System Tools -> Firmware Upgrade. Pilih file yang akan digunakan untuk mengupgrade. Pastikan anda memilih file yang sesuai dengan hardware dan memiliki kata **factory** pada tulisan ini saya menggunakan file **openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin**, selanjutnya tekan tombol upgrade dan tunggu sampai proses upgrade selesai.
 
 Jika proses upgrade berhasil router akan melakukan restart, ketika selesai proses booting anda dapat mengakses router dengan melakukan telnet ke alamat 192.168.1.1 menggunakan LAN port.
+
+![Upgrade Completed](https://lh4.googleusercontent.com/-7zEW8fjpx94/VKz3MYxX-nI/AAAAAAAAAPU/BGNlI24b_mU/w978-h550-no/1043ND%2BUpgrade%2BPantou%2BCompleted.png)
 
 ###Instalasi Package tambahan untuk metode CPqD/Pantou
 
@@ -450,6 +453,8 @@ ovs-vsctl set-controller ovs-br tcp:192.168.77.30:6633
 
 ####Hasil pengujian implementasi metode Pantou/CPqD
 
+![CPqD](https://lh5.googleusercontent.com/-2uvKfPdBTCo/VK0GCUkNE3I/AAAAAAAAAPs/zExmXy4jb2E/w978-h550-no/CPqD%2BTCP.png)
+
 #####Ethernet0.1 - Ethernet 0.2
 
 ```
@@ -522,6 +527,8 @@ hasil lengkap pengujian anda dapat lihat pada file berikut:
 
 
 ####Hasil pengujian implementasi metode Open vSwitch
+
+![OvS](https://lh4.googleusercontent.com/-nlBiPWHXmN4/VK0GFAJj-zI/AAAAAAAAAP8/jT6Yt_DpkCE/w978-h550-no/OvS%2BTCP.png)
 
 #####Ethernet0.1 - Ethernet 0.2
 
