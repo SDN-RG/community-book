@@ -1,0 +1,364 @@
+
+havid@havid-Standard-PC-i440FX-PIIX-1996:~$ ryu-manager --verbose ryu.app.simple_switch
+loading app ryu.app.simple_switch
+loading app ryu.controller.ofp_handler
+instantiating app ryu.app.simple_switch of SimpleSwitch
+instantiating app ryu.controller.ofp_handler of OFPHandler
+BRICK SimpleSwitch
+  CONSUMES EventOFPPacketIn
+  CONSUMES EventOFPPortStatus
+BRICK ofp_event
+  PROVIDES EventOFPPacketIn TO {'SimpleSwitch': set(['main'])}
+  PROVIDES EventOFPPortStatus TO {'SimpleSwitch': set(['main'])}
+  CONSUMES EventOFPSwitchFeatures
+  CONSUMES EventOFPPortDescStatsReply
+  CONSUMES EventOFPHello
+  CONSUMES EventOFPErrorMsg
+  CONSUMES EventOFPEchoRequest
+connected socket:<eventlet.greenio.GreenSocket object at 0x7f8d54f4f190> address:('192.168.77.71', 49107)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0x7f8d54f48d10>
+move onto config mode
+switch features ev version: 0x1 msg_type 0x6 xid 0xbc7bc428 OFPSwitchFeatures(actions=3839,capabilities=199,datapath_id=1,n_buffers=256,n_tables=2,ports={1: OFPPhyPort(port_no=1,hw_addr='a0:f3:c1:5b:80:24',name='eth0.1',config=0,state=0,curr=0,advertised=0,supported=0,peer=0), 2: OFPPhyPort(port_no=2,hw_addr='a0:f3:c1:5b:80:24',name='eth0.2',config=0,state=0,curr=0,advertised=0,supported=0,peer=0), 3: OFPPhyPort(port_no=3,hw_addr='a0:f3:c1:5b:80:24',name='eth0.3',config=0,state=0,curr=0,advertised=0,supported=0,peer=0), 4: OFPPhyPort(port_no=4,hw_addr='a0:f3:c1:5b:80:24',name='eth0.4',config=0,state=0,curr=0,advertised=0,supported=0,peer=0), 5: OFPPhyPort(port_no=5,hw_addr='a0:f3:c1:5b:80:24',name='wlan0',config=0,state=0,curr=0,advertised=0,supported=0,peer=0)})
+move onto main mode
+
+
+root@OpenWrt:/# /etc/init.d/openflow start
+eth0.1,eth0.2,eth0.3,eth0.4,wlan0
+Configuring OpenFlow switch for out-of-band control
+root@OpenWrt:/# Jan 06 12:33:54|00001|vlog|INFO|opened log file /var/log/ofprotocol.log
+Jan 06 12:33:54|00002|secchan|INFO|OpenFlow reference implementation version 1.0.0
+Jan 06 12:33:54|00003|secchan|INFO|OpenFlow protocol version 0x01
+Jan 06 12:33:54|00004|secchan|WARN|new management connection will receive asynchronous messages
+Jan 06 12:33:54|00005|rconn|INFO|unix:/var/run/dp0.sock: connecting...
+Jan 06 12:33:54|00006|rconn|INFO|tcp:192.168.77.30:6633: connecting...
+Jan 06 12:33:54|00007|rconn|INFO|unix:/var/run/dp0.sock: connected
+Jan 06 12:33:54|00008|rconn|INFO|tcp:192.168.77.30:6633: connected
+Jan 06 12:33:54|00009|port_watcher|INFO|Datapath id is 000000000001
+
+root@havid-MS-7756:~# ovs-ofctl show tcp:192.168.77.71
+OFPT_FEATURES_REPLY (xid=0x2): dpid:0000000000000001
+n_tables:2, n_buffers:256
+capabilities: FLOW_STATS TABLE_STATS PORT_STATS QUEUE_STATS ARP_MATCH_IP
+actions: OUTPUT SET_VLAN_VID SET_VLAN_PCP STRIP_VLAN SET_DL_SRC SET_DL_DST SET_NW_SRC SET_NW_DST SET_TP_SRC SET_TP_DST ENQUEUE
+ 1(eth0.1): addr:a0:f3:c1:5b:80:24
+     config:     0
+     state:      0
+     speed: 0 Mbps now, 0 Mbps max
+ 2(eth0.2): addr:a0:f3:c1:5b:80:24
+     config:     0
+     state:      0
+     speed: 0 Mbps now, 0 Mbps max
+ 3(eth0.3): addr:a0:f3:c1:5b:80:24
+     config:     0
+     state:      0
+     speed: 0 Mbps now, 0 Mbps max
+ 4(eth0.4): addr:a0:f3:c1:5b:80:24
+     config:     0
+     state:      0
+     speed: 0 Mbps now, 0 Mbps max
+ 5(wlan0): addr:a0:f3:c1:5b:80:24
+     config:     0
+     state:      0
+     speed: 0 Mbps now, 0 Mbps max
+OFPT_GET_CONFIG_REPLY (xid=0x4): frags=normal miss_send_len=128
+
+
+havid@havid-MS-7756:~$ ping 10.1.1.2 -c 5
+PING 10.1.1.2 (10.1.1.2) 56(84) bytes of data.
+64 bytes from 10.1.1.2: icmp_seq=1 ttl=64 time=0.988 ms
+64 bytes from 10.1.1.2: icmp_seq=2 ttl=64 time=0.704 ms
+64 bytes from 10.1.1.2: icmp_seq=3 ttl=64 time=0.709 ms
+64 bytes from 10.1.1.2: icmp_seq=4 ttl=64 time=0.696 ms
+64 bytes from 10.1.1.2: icmp_seq=5 ttl=64 time=0.628 ms
+
+--- 10.1.1.2 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4004ms
+rtt min/avg/max/mdev = 0.628/0.745/0.988/0.124 ms
+havid@havid-MS-7756:~$ 
+
+root@havid-MS-7756:~# ovs-ofctl dump-flows tcp:192.168.77.71
+OFPST_FLOW reply (xid=0x4):
+ cookie=0x0, duration=112.382s, table=1, n_packets=5, n_bytes=452, in_port=2,dl_dst=3c:97:0e:00:b0:76 actions=output:1
+ cookie=0x0, duration=112.387s, table=1, n_packets=7, n_bytes=654, in_port=1,dl_dst=a0:f3:c1:00:c1:2a actions=output:2
+
+
+
+havid@havid-MS-7756:~$ iperf -s
+------------------------------------------------------------
+Server listening on TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[  4] local 10.1.1.1 port 5001 connected with 10.1.1.2 port 33739
+[ ID] Interval       Transfer     Bandwidth
+[  4]  0.0-10.1 sec  43.4 MBytes  36.1 Mbits/sec
+[  5] local 10.1.1.1 port 5001 connected with 10.1.1.2 port 33740
+[  5]  0.0-10.1 sec  43.4 MBytes  36.1 Mbits/sec
+[  4] local 10.1.1.1 port 5001 connected with 10.1.1.2 port 33741
+[  4]  0.0-10.1 sec  43.4 MBytes  36.0 Mbits/sec
+[  5] local 10.1.1.1 port 5001 connected with 10.1.1.2 port 33742
+[  5]  0.0-10.1 sec  43.2 MBytes  36.0 Mbits/sec
+[  4] local 10.1.1.1 port 5001 connected with 10.1.1.2 port 33743
+[  4]  0.0-10.1 sec  43.2 MBytes  36.0 Mbits/sec
+^Chavid@havid-MS-7756:~$ 
+
+havid@havid-MS-7756:~$ iperf -s -u -i 1
+------------------------------------------------------------
+Server listening on UDP port 5001
+Receiving 1470 byte datagrams
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  3] local 10.1.1.1 port 5001 connected with 10.1.1.2 port 49089
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  3]  0.0- 1.0 sec  4.48 MBytes  37.6 Mbits/sec   0.058 ms 5175/ 8374 (62%)
+[  3]  1.0- 2.0 sec  4.36 MBytes  36.6 Mbits/sec   0.082 ms 5427/ 8537 (64%)
+[  3]  2.0- 3.0 sec  4.47 MBytes  37.5 Mbits/sec   0.081 ms 5349/ 8540 (63%)
+[  3]  3.0- 4.0 sec  4.47 MBytes  37.5 Mbits/sec   0.060 ms 5359/ 8547 (63%)
+[  3]  4.0- 5.0 sec  4.47 MBytes  37.5 Mbits/sec   0.068 ms 5365/ 8552 (63%)
+[  3]  5.0- 6.0 sec  4.47 MBytes  37.5 Mbits/sec   0.071 ms 5357/ 8545 (63%)
+[  3]  6.0- 7.0 sec  4.47 MBytes  37.5 Mbits/sec   0.072 ms 5356/ 8543 (63%)
+[  3]  7.0- 8.0 sec  4.35 MBytes  36.5 Mbits/sec   0.081 ms 5449/ 8554 (64%)
+[  3]  8.0- 9.0 sec  4.47 MBytes  37.5 Mbits/sec   0.090 ms 5353/ 8538 (63%)
+[  3]  9.0-10.0 sec  4.47 MBytes  37.5 Mbits/sec   0.079 ms 5369/ 8554 (63%)
+[  3]  0.0-10.3 sec  44.6 MBytes  36.5 Mbits/sec  14.807 ms 53663/85452 (63%)
+[  3]  0.0-10.3 sec  1 datagrams received out-of-order
+
+^Chavid@havid-MS-7756:~$ iperf -s -u -i 1
+------------------------------------------------------------
+Server listening on UDP port 5001
+Receiving 1470 byte datagrams
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  3] local 10.1.1.1 port 5001 connected with 10.1.1.2 port 52419
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  3]  0.0- 1.0 sec  1.19 MBytes  10.0 Mbits/sec   0.025 ms    0/  852 (0%)
+[  3]  1.0- 2.0 sec  1.19 MBytes  10.0 Mbits/sec   0.028 ms    0/  850 (0%)
+[  3]  2.0- 3.0 sec  1.19 MBytes  10.0 Mbits/sec   0.023 ms    0/  850 (0%)
+[  3]  3.0- 4.0 sec  1.19 MBytes  10.0 Mbits/sec   0.028 ms    0/  851 (0%)
+[  3]  4.0- 5.0 sec  1.19 MBytes  10.0 Mbits/sec   0.026 ms    0/  850 (0%)
+[  3]  5.0- 6.0 sec  1.19 MBytes  10.0 Mbits/sec   0.031 ms    0/  850 (0%)
+[  3]  6.0- 7.0 sec  1.19 MBytes  10.0 Mbits/sec   0.024 ms    0/  851 (0%)
+[  3]  7.0- 8.0 sec  1.19 MBytes  10.0 Mbits/sec   0.033 ms    0/  850 (0%)
+[  3]  8.0- 9.0 sec  1.19 MBytes  10.0 Mbits/sec   0.024 ms    0/  850 (0%)
+[  3]  0.0-10.0 sec  11.9 MBytes  10.0 Mbits/sec   0.023 ms    0/ 8504 (0%)
+[  3]  0.0-10.0 sec  1 datagrams received out-of-order
+
+
+
+
+WIFI
+
+havid@havid-MS-7756:~$ ping 10.1.1.3 -c 5
+PING 10.1.1.3 (10.1.1.3) 56(84) bytes of data.
+64 bytes from 10.1.1.3: icmp_seq=1 ttl=64 time=1.32 ms
+64 bytes from 10.1.1.3: icmp_seq=2 ttl=64 time=1.46 ms
+64 bytes from 10.1.1.3: icmp_seq=3 ttl=64 time=1.44 ms
+64 bytes from 10.1.1.3: icmp_seq=4 ttl=64 time=1.38 ms
+64 bytes from 10.1.1.3: icmp_seq=5 ttl=64 time=2.49 ms
+
+--- 10.1.1.3 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4005ms
+rtt min/avg/max/mdev = 1.322/1.621/2.494/0.440 ms
+
+root@havid-MS-7756:~# ovs-ofctl dump-flows tcp:192.168.77.71
+OFPST_FLOW reply (xid=0x4):
+ cookie=0x0, duration=16.412s, table=1, n_packets=12, n_bytes=1176, in_port=2,dl_dst=68:5d:43:79:5c:7f actions=output:5
+ cookie=0x0, duration=16.423s, table=1, n_packets=15, n_bytes=1470, in_port=5,dl_dst=a0:f3:c1:00:c1:2a actions=output:2
+
+^Chavid@havid-MS-7756:~$ iperf -s
+------------------------------------------------------------
+Server listening on TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[  4] local 10.1.1.1 port 5001 connected with 10.1.1.3 port 51472
+[ ID] Interval       Transfer     Bandwidth
+[  4]  0.0-10.2 sec  22.9 MBytes  18.9 Mbits/sec
+[  5] local 10.1.1.1 port 5001 connected with 10.1.1.3 port 51473
+[  5]  0.0-10.2 sec  22.1 MBytes  18.2 Mbits/sec
+[  4] local 10.1.1.1 port 5001 connected with 10.1.1.3 port 51474
+[  4]  0.0-10.2 sec  24.1 MBytes  19.9 Mbits/sec
+[  5] local 10.1.1.1 port 5001 connected with 10.1.1.3 port 51475
+[  5]  0.0-10.2 sec  22.5 MBytes  18.6 Mbits/sec
+[  4] local 10.1.1.1 port 5001 connected with 10.1.1.3 port 51476
+[  4]  0.0-10.2 sec  22.9 MBytes  18.8 Mbits/sec
+
+^Chavid@havid-MS-7756:~$ iperf -s -u -i 1
+------------------------------------------------------------
+Server listening on UDP port 5001
+Receiving 1470 byte datagrams
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  3] local 10.1.1.1 port 5001 connected with 10.1.1.3 port 56892
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  3]  0.0- 1.0 sec  2.51 MBytes  21.1 Mbits/sec   1.694 ms    0/ 1790 (0%)
+[  3]  1.0- 2.0 sec  2.57 MBytes  21.5 Mbits/sec   1.976 ms    0/ 1831 (0%)
+[  3]  2.0- 3.0 sec  2.47 MBytes  20.7 Mbits/sec   0.670 ms    0/ 1764 (0%)
+[  3]  3.0- 4.0 sec  2.45 MBytes  20.5 Mbits/sec   0.858 ms    0/ 1746 (0%)
+[  3]  4.0- 5.0 sec  2.59 MBytes  21.7 Mbits/sec   0.616 ms    0/ 1848 (0%)
+[  3]  5.0- 6.0 sec  2.91 MBytes  24.4 Mbits/sec   0.794 ms    0/ 2077 (0%)
+[  3]  6.0- 7.0 sec  2.51 MBytes  21.1 Mbits/sec   0.688 ms    0/ 1790 (0%)
+[  3]  7.0- 8.0 sec  2.75 MBytes  23.0 Mbits/sec   0.669 ms    0/ 1960 (0%)
+[  3]  8.0- 9.0 sec  2.61 MBytes  21.9 Mbits/sec   0.769 ms    0/ 1859 (0%)
+[  3]  9.0-10.0 sec  2.65 MBytes  22.2 Mbits/sec   0.920 ms    0/ 1889 (0%)
+[  3]  0.0-10.0 sec  26.1 MBytes  21.8 Mbits/sec   1.705 ms    0/18608 (0%)
+[  3]  0.0-10.0 sec  1 datagrams received out-of-order
+ 
+Chavid@havid-MS-7756:~$ iperf -s -u -i 1
+------------------------------------------------------------
+Server listening on UDP port 5001
+Receiving 1470 byte datagrams
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  3] local 10.1.1.1 port 5001 connected with 10.1.1.3 port 55914
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  3]  0.0- 1.0 sec  1.10 MBytes  9.21 Mbits/sec   0.143 ms   69/  852 (8.1%)
+[  3]  1.0- 2.0 sec  1.19 MBytes  10.0 Mbits/sec   0.066 ms    0/  850 (0%)
+[  3]  2.0- 3.0 sec  1.19 MBytes  10.0 Mbits/sec   0.270 ms    0/  850 (0%)
+[  3]  3.0- 4.0 sec  1.19 MBytes  9.97 Mbits/sec   0.164 ms    0/  848 (0%)
+[  3]  4.0- 5.0 sec  1.20 MBytes  10.0 Mbits/sec   0.139 ms    0/  853 (0%)
+[  3]  5.0- 6.0 sec  1.19 MBytes  10.0 Mbits/sec   0.063 ms    0/  850 (0%)
+[  3]  6.0- 7.0 sec  1.19 MBytes  10.0 Mbits/sec   0.158 ms    0/  851 (0%)
+[  3]  7.0- 8.0 sec  1.19 MBytes  10.0 Mbits/sec   0.448 ms    0/  850 (0%)
+[  3]  8.0- 9.0 sec  1.19 MBytes  10.0 Mbits/sec   0.430 ms    0/  851 (0%)
+[  3]  0.0-10.0 sec  11.8 MBytes  9.86 Mbits/sec   0.165 ms  118/ 8504 (1.4%)
+[  3]  0.0-10.0 sec  1 datagrams received out-of-order
+
+
+JPERF
+
+iperf -s -P 0 -i 1 -p 5001 -C -f m
+------------------------------------------------------------
+Server listening on TCP port 5001
+TCP window size: 0.08 MByte (default)
+------------------------------------------------------------
+[  4] local 10.1.1.1 port 5001 connected with 10.1.1.2 port 33799
+[ ID] Interval       Transfer     Bandwidth
+[  4]  0.0- 1.0 sec  4.21 MBytes  35.3 Mbits/sec
+[  4]  1.0- 2.0 sec  4.20 MBytes  35.3 Mbits/sec
+[  4]  2.0- 3.0 sec  4.32 MBytes  36.2 Mbits/sec
+[  4]  3.0- 4.0 sec  4.29 MBytes  36.0 Mbits/sec
+[  4]  4.0- 5.0 sec  4.32 MBytes  36.2 Mbits/sec
+[  4]  5.0- 6.0 sec  4.28 MBytes  35.9 Mbits/sec
+[  4]  6.0- 7.0 sec  4.29 MBytes  36.0 Mbits/sec
+[  4]  7.0- 8.0 sec  4.21 MBytes  35.3 Mbits/sec
+[  4]  8.0- 9.0 sec  4.30 MBytes  36.1 Mbits/sec
+[  4]  9.0-10.0 sec  4.28 MBytes  35.9 Mbits/sec
+[  4]  0.0-10.1 sec  43.0 MBytes  35.8 Mbits/sec
+
+Iperf thread stopped [CAUSE=Stream closed]
+
+
+iperf -s -u -P 0 -i 1 -p 5001 -C -f m
+------------------------------------------------------------
+Server listening on UDP port 5001
+Receiving 1470 byte datagrams
+UDP buffer size: 0.20 MByte (default)
+------------------------------------------------------------
+[  3] local 10.1.1.1 port 5001 connected with 10.1.1.2 port 39075
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  3]  0.0- 1.0 sec  4.52 MBytes  37.9 Mbits/sec   0.060 ms 5152/ 8377 (62%)
+[  3]  1.0- 2.0 sec  4.38 MBytes  36.8 Mbits/sec   0.072 ms 5407/ 8534 (63%)
+[  3]  2.0- 3.0 sec  4.49 MBytes  37.6 Mbits/sec   0.068 ms 5331/ 8531 (62%)
+[  3]  3.0- 4.0 sec  4.51 MBytes  37.8 Mbits/sec   0.068 ms 5302/ 8518 (62%)
+[  3]  4.0- 5.0 sec  4.50 MBytes  37.7 Mbits/sec   0.064 ms 5344/ 8552 (62%)
+[  3]  5.0- 6.0 sec  4.49 MBytes  37.7 Mbits/sec   0.070 ms 5339/ 8543 (62%)
+[  3]  6.0- 7.0 sec  4.50 MBytes  37.7 Mbits/sec   0.078 ms 5339/ 8547 (62%)
+[  3]  7.0- 8.0 sec  4.39 MBytes  36.8 Mbits/sec   0.067 ms 5419/ 8548 (63%)
+[  3]  8.0- 9.0 sec  4.49 MBytes  37.7 Mbits/sec   0.059 ms 5319/ 8523 (62%)
+[  3]  9.0-10.0 sec  4.50 MBytes  37.7 Mbits/sec   0.082 ms 5346/ 8555 (62%)
+[  3]  0.0-10.3 sec  44.9 MBytes  36.7 Mbits/sec  14.865 ms 53398/85391 (63%)
+[  3]  0.0-10.3 sec  1 datagrams received out-of-order
+
+Iperf thread stopped [CAUSE=Stream closed]
+
+iperf -s -u -P 0 -i 1 -p 5001 -C -f m
+------------------------------------------------------------
+Server listening on UDP port 5001
+Receiving 1470 byte datagrams
+UDP buffer size: 0.20 MByte (default)
+------------------------------------------------------------
+[  3] local 10.1.1.1 port 5001 connected with 10.1.1.2 port 41390
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  3]  0.0- 1.0 sec  1.19 MBytes  10.0 Mbits/sec   0.025 ms    0/  852 (0%)
+[  3]  1.0- 2.0 sec  1.19 MBytes  10.0 Mbits/sec   0.025 ms    0/  850 (0%)
+[  3]  2.0- 3.0 sec  1.19 MBytes  10.0 Mbits/sec   0.023 ms    0/  851 (0%)
+[  3]  3.0- 4.0 sec  1.19 MBytes  10.0 Mbits/sec   0.027 ms    0/  850 (0%)
+[  3]  4.0- 5.0 sec  1.19 MBytes  10.0 Mbits/sec   0.019 ms    0/  850 (0%)
+[  3]  5.0- 6.0 sec  1.19 MBytes  10.0 Mbits/sec   0.021 ms    0/  851 (0%)
+[  3]  6.0- 7.0 sec  1.19 MBytes  10.0 Mbits/sec   0.032 ms    0/  850 (0%)
+[  3]  7.0- 8.0 sec  1.19 MBytes  10.0 Mbits/sec   0.022 ms    0/  850 (0%)
+[  3]  8.0- 9.0 sec  1.19 MBytes  10.0 Mbits/sec   0.024 ms    0/  851 (0%)
+[  3]  0.0-10.0 sec  11.9 MBytes  10.0 Mbits/sec   0.023 ms    0/ 8504 (0%)
+[  3]  0.0-10.0 sec  1 datagrams received out-of-order
+
+
+WIFI
+
+
+Iperf thread stopped [CAUSE=Stream closed]
+iperf -s -P 0 -i 1 -p 5001 -C -f m
+------------------------------------------------------------
+Server listening on TCP port 5001
+TCP window size: 0.08 MByte (default)
+------------------------------------------------------------
+[  4] local 10.1.1.1 port 5001 connected with 10.1.1.3 port 51529
+[ ID] Interval       Transfer     Bandwidth
+[  4]  0.0- 1.0 sec  2.24 MBytes  18.8 Mbits/sec
+[  4]  1.0- 2.0 sec  2.20 MBytes  18.4 Mbits/sec
+[  4]  2.0- 3.0 sec  2.48 MBytes  20.8 Mbits/sec
+[  4]  3.0- 4.0 sec  2.39 MBytes  20.0 Mbits/sec
+[  4]  4.0- 5.0 sec  2.38 MBytes  20.0 Mbits/sec
+[  4]  5.0- 6.0 sec  2.32 MBytes  19.5 Mbits/sec
+[  4]  6.0- 7.0 sec  2.30 MBytes  19.3 Mbits/sec
+[  4]  7.0- 8.0 sec  2.30 MBytes  19.3 Mbits/sec
+[  4]  8.0- 9.0 sec  2.34 MBytes  19.7 Mbits/sec
+[  4]  9.0-10.0 sec  2.12 MBytes  17.7 Mbits/sec
+[  4]  0.0-10.2 sec  23.5 MBytes  19.3 Mbits/sec
+
+Iperf thread stopped [CAUSE=Stream closed]
+
+iperf -s -u -P 0 -i 1 -p 5001 -C -f m
+------------------------------------------------------------
+Server listening on UDP port 5001
+Receiving 1470 byte datagrams
+UDP buffer size: 0.20 MByte (default)
+------------------------------------------------------------
+[  3] local 10.1.1.1 port 5001 connected with 10.1.1.3 port 49068
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  3]  0.0- 1.0 sec  2.97 MBytes  24.9 Mbits/sec   0.854 ms    0/ 2115 (0%)
+[  3]  1.0- 2.0 sec  2.98 MBytes  25.0 Mbits/sec   0.751 ms    0/ 2123 (0%)
+[  3]  2.0- 3.0 sec  2.46 MBytes  20.6 Mbits/sec   0.926 ms    0/ 1752 (0%)
+[  3]  3.0- 4.0 sec  2.57 MBytes  21.5 Mbits/sec   0.838 ms    0/ 1831 (0%)
+[  3]  4.0- 5.0 sec  2.29 MBytes  19.2 Mbits/sec   0.883 ms    0/ 1630 (0%)
+[  3]  5.0- 6.0 sec  2.90 MBytes  24.3 Mbits/sec   1.316 ms    0/ 2069 (0%)
+[  3]  6.0- 7.0 sec  2.91 MBytes  24.4 Mbits/sec   0.959 ms    0/ 2079 (0%)
+[  3]  7.0- 8.0 sec  2.80 MBytes  23.5 Mbits/sec   0.742 ms    0/ 1997 (0%)
+[  3]  8.0- 9.0 sec  2.73 MBytes  22.9 Mbits/sec   1.296 ms    0/ 1944 (0%)
+[  3]  9.0-10.0 sec  2.50 MBytes  21.0 Mbits/sec   1.233 ms    0/ 1786 (0%)
+[  3]  0.0-10.0 sec  27.1 MBytes  22.7 Mbits/sec   1.778 ms    0/19363 (0%)
+[  3]  0.0-10.0 sec  1 datagrams received out-of-order
+
+iperf -s -u -P 0 -i 1 -p 5001 -C -f m
+------------------------------------------------------------
+Server listening on UDP port 5001
+Receiving 1470 byte datagrams
+UDP buffer size: 0.20 MByte (default)
+------------------------------------------------------------
+[  3] local 10.1.1.1 port 5001 connected with 10.1.1.3 port 42612
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  3]  0.0- 1.0 sec  1.19 MBytes  10.0 Mbits/sec   0.206 ms    0/  850 (0%)
+[  3]  1.0- 2.0 sec  1.19 MBytes  10.0 Mbits/sec   0.354 ms    0/  850 (0%)
+[  3]  2.0- 3.0 sec  1.19 MBytes  10.0 Mbits/sec   0.385 ms    0/  851 (0%)
+[  3]  3.0- 4.0 sec  1.19 MBytes  10.0 Mbits/sec   0.390 ms    0/  850 (0%)
+[  3]  4.0- 5.0 sec  1.19 MBytes  9.98 Mbits/sec   0.109 ms    0/  849 (0%)
+[  3]  5.0- 6.0 sec  1.19 MBytes  10.0 Mbits/sec   0.209 ms    0/  852 (0%)
+[  3]  6.0- 7.0 sec  1.19 MBytes  10.0 Mbits/sec   0.327 ms    0/  850 (0%)
+[  3]  7.0- 8.0 sec  1.19 MBytes  10.0 Mbits/sec   0.275 ms    0/  850 (0%)
+[  3]  8.0- 9.0 sec  1.18 MBytes  9.93 Mbits/sec   0.488 ms    0/  844 (0%)
+[  3]  9.0-10.0 sec  1.20 MBytes  10.1 Mbits/sec   0.101 ms    0/  857 (0%)
+[  3]  0.0-10.0 sec  11.9 MBytes  10.0 Mbits/sec   0.091 ms    0/ 8504 (0%)
+[  3]  0.0-10.0 sec  1 datagrams received out-of-order
+
+
+
+
+
