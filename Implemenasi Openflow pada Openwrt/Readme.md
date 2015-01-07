@@ -74,7 +74,7 @@ make V=s
 ```
 
 ####5. Setelah berhasil melakukan proses build anda dapat menambahkan package ke firmware yang akan dibuild.
-Anda dapat menggunakan openflow versi 1.0 (standford) dengan mengikuti langkah 5.1.A atau menggunakan openflow versi 1.3 (CPqD) dengan mengikuti langkah 5.1.B atau menggunakan Open vSwitch 2.3.0 (Roan Huang) dengan mengikuti langkah 5.2.
+Anda dapat menggunakan openflow versi 1.0 (standford) dengan mengikuti langkah **5.1.A** atau menggunakan openflow versi 1.3 (CPqD) dengan mengikuti langkah **5.1.B** atau menggunakan Open vSwitch 2.3.0 (Roan Huang) dengan mengikuti langkah **5.2**.
 
 ####5.1.A Untuk menambahkan package openflow versi 1.0 (standford) ikuti langkah berikut :
 
