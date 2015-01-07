@@ -90,7 +90,6 @@ ln -s ~/ofwrt/openflow-openwrt/openflow-1.0/files
 #####5.1.A.1 Konfigurasi package openflow dan package yang dibutuhkan oleh openflow.
 
 ```
-```
 cd ~/ofwrt/barrier_breaker
 make menuconfig
 ```
@@ -140,6 +139,7 @@ uboot-ar71xx-nbg460n_550n_550nh
 ```
 
 ####5.1.B Untuk menambahkan package openflow versi 1.3 (CPqD) ikuti langkah berikut :
+
 ```
 cd ~/ofwrt/
 git clone https://github.com/CPqD/openflow-openwrt.git
@@ -148,7 +148,9 @@ ln -s ~/ofwrt/openflow-openwrt/openflow-1.3/
 cd ~/ofwrt/barrier_breaker/
 ln -s ~/ofwrt/openflow-openwrt/openflow-1.3/files
 ```
+
 #####5.1.B.1 Konfigurasi package openflow dan package yang dibutuhkan oleh openflow.
+
 ```
 cd ~/ofwrt/barrier_breaker
 make menuconfig
@@ -159,6 +161,7 @@ make menuconfig
 * Save dan exit
 
 #####5.1.B.2 Konfigurasi kernel agar support queueing
+
 ```
 make kernel_menuconfig
 ```
@@ -166,11 +169,12 @@ make kernel_menuconfig
 * Save dan exit
 
 #####5.1.B.3 Kemudian lakukan proses build, proses ini cukup memakan waktu. Pastikan anda terhubung dengan internet dan tidak terjadi build error.
+
 ```
 make prereq
 make V=s
-
 ```
+
 #####5.1.B.4 Setelah berhasil anda akan mendapatkan firmware Openwrt dengan custom package openflow 1.3
 Hasil dari proses build ini adalah firmware openwrt dengan custom package openflow 1.3 untuk TP-Link TL-1043ND yang berada pada folder  **/ofwrt/barrier_breaker/bin/ar71xx$**
 
@@ -194,6 +198,7 @@ openwrt-ar71xx-generic-vmlinux-lzma.elf
 packages
 uboot-ar71xx-nbg460n_550n_550nh
 ```
+
 ####5.2 Untuk menambahkan package Open vSwitch versi 2.3.0 (Roan Huang) ikuti langkah berikut :
 
 ```
@@ -206,6 +211,7 @@ wget https://gist.githubusercontent.com/pichuang/7372af6d5d3bd1db5a88/raw/4e2290
 
 
 #####5.2.1 Konfigurasi package Open vSwitch dan package yang dibutuhkan oleh Open vSwitch.
+
 ```
 cd ~/ofwrt/barrier_breaker
 make menuconfig
@@ -217,6 +223,7 @@ make menuconfig
 * Save dan exit
 
 #####5.2.2 Untuk package Open vSwitch ada satu command yang perlu ditambahkan setiap sebelum melakukan proses build
+
 ```
 echo '#CONFIG_KERNEL_BRIDGE is not set' >> .config
 ```
@@ -274,6 +281,7 @@ Jika proses upgrade berhasil router akan melakukan restart, ketika selesai prose
 ###Instalasi Package tambahan untuk metode CPqD/Pantou
 
 Pada OpenWRT versi Barrier Breaker, package tc (traffic control) tidak dapat dimasukan dalam proses pembuatan firmware. Kita harus menambahakan package tc secara manual. Hubungkan router yang sudah diupgrade ke internet kemudian ikuti langkah berikut:
+
 ```
 cd tmp
 wget http://downloads.openwrt.org/attitude_adjustment/12.09/ar71xx/generic/packages/tc_3.3.0-1_ar71xx.ipk
@@ -292,6 +300,7 @@ ln -s /lib/functions.sh
 ####/etc/config/network
 
 Secara default konfigurasi network interfaces pada openwrt terdiri dari LAN port, WAN port dan Wireless. Kita perlu merubah konfigurasi network interfaces agar tiap port dapat menjadi Openflow port. Pada konfigurasi network interfaces berikut, port eth0.5 (WAN Port) akan dihubungkan ke kontroller, setelah konfigurasi network di save dan diterapkan IP router akan berubah menjadi **192.168.77.71**. Anda dapat menyesuaikan IP router dengan memodifikasi option 'ipaddr' pada interface eth0.5.
+
 ```
 config 'switch'
         option 'name' 'rtl8366rb'
@@ -410,6 +419,7 @@ config wifi-iface
 ###Konfigurasi Package Openflow
 #### /etc/config/openflow
 Untuk metode Pantou/CPqD anda mendefinisikan controller dan port yang akan dapat menjadi openflow port pada /etc/config/openflow. pada konfigurasi berikut port yang akan menjadi openflow port adalah eth0.1 eth0.2 eth0.3 eth0.4 wlan0 dan controller berada pada **tcp:192.168.77.30:6633**, anda dapat menyesuaikan ip controller dan openflow port dengan memodifikasi option 'ofctl' untuk controller dan option 'ofports' untuk openflow port.
+
 ```
 config 'ofswitch'
         option 'dp' 'dp0'
@@ -423,6 +433,7 @@ config 'ofswitch'
 ###Konfigurasi Package Open vSwitch
 
 Untuk medote Open vSwtich anda mendefinisikan perlu membuat bridge terlebih dahulu dan menambahkan openflow port ke bridge kemdudian anda dapat mendefinisikan controller. ikuti langkah berikut untuk mengkonfigurasi package Open vSwtich.
+
 ```
 ovs-vsctl add-br ovs-br
 ovs-vsctl add-port ovs-br eth0.1 -- set Interface eth0.1 ofport_request=1
@@ -440,6 +451,7 @@ ovs-vsctl set-controller ovs-br tcp:192.168.77.30:6633
 ####Hasil pengujian implementasi metode Pantou/CPqD
 
 #####Ethernet0.1 - Ethernet 0.2
+
 ```
 havid@havid-MS-7756:~$ ping 10.1.1.2 -c 5
 PING 10.1.1.2 (10.1.1.2) 56(84) bytes of data.
@@ -468,6 +480,7 @@ TCP window size: 85.3 KByte (default)
 [  5] local 10.1.1.1 port 5001 connected with 10.1.1.2 port 33816
 [  5]  0.0-10.1 sec  38.2 MBytes  31.9 Mbits/sec
 ```
+
 #####Wlan0 - Ethernet 0.2
 
 ```
@@ -511,6 +524,7 @@ hasil lengkap pengujian anda dapat lihat pada file berikut:
 ####Hasil pengujian implementasi metode Open vSwitch
 
 #####Ethernet0.1 - Ethernet 0.2
+
 ```
 havid@havid-MS-7756:~$ ping 10.1.1.2 -c 5
 PING 10.1.1.2 (10.1.1.2) 56(84) bytes of data.
@@ -538,7 +552,9 @@ TCP window size: 85.3 KByte (default)
 [  4] local 10.1.1.1 port 5001 connected with 10.1.1.2 port 52150
 [  4]  0.0-10.0 sec   615 MBytes   514 Mbits/sec
 ```
+
 #####Wlan0 - Ethernet 0.2
+
 ```
 havid@havid-MS-7756:~$ ping 10.1.1.3 -c 5
 PING 10.1.1.3 (10.1.1.3) 56(84) bytes of data.
