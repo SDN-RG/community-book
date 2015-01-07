@@ -275,7 +275,7 @@ B. Firmware openwrt dengan custom package openflow (Pantou/CPqD) / Open vSwtich 
 
 ###Langkah-langkah pemasangan firmware openwrt
 ![Upgrade Firmware](https://lh4.googleusercontent.com/-YGCDaf1Qtwk/VKz3Mb9neKI/AAAAAAAAAPQ/q16uMgsSVHU/w978-h550-no/1043ND%2BPantou%2BUpgrade.png)
-Masuk ke alamat pengaturan wireless router anda, biasanya alamat pengaturan 192.168.0.1 dengan username admin password admin. Pilih menu System Tools -> Firmware Upgrade. Pilih file yang akan digunakan untuk mengupgrade. Pastikan anda memilih file yang sesuai dengan hardware dan memiliki kata **factory** pada tulisan ini saya menggunakan file **openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin**, selanjutnya tekan tombol upgrade dan tunggu sampai proses upgrade selesai.
+Masuk ke alamat pengaturan wireless router anda, biasanya alamat pengaturan 192.168.0.1 / 192.168.1.1 dengan username admin password admin. Pilih menu System Tools -> Firmware Upgrade. Pilih file yang akan digunakan untuk mengupgrade. Pastikan anda memilih file yang sesuai dengan hardware dan memiliki kata **factory** pada tulisan ini saya menggunakan file **openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin**, selanjutnya tekan tombol upgrade dan tunggu sampai proses upgrade selesai.
 
 Jika proses upgrade berhasil router akan melakukan restart, ketika selesai proses booting anda dapat mengakses router dengan melakukan telnet ke alamat 192.168.1.1 menggunakan LAN port.
 
@@ -599,6 +599,8 @@ hasil lengkap pengujian anda dapat lihat pada file berikut:
 [Dokumentasi Open vSwitch](https://raw.githubusercontent.com/saleh-havid/community-book/master/Implemenasi%20Openflow%20pada%20Openwrt/Assets/Dokumentasi%20OvS.txt)
 
 Referensi:
+
+http://wiki.openwrt.org/doc/howto/buildroot.exigence
 
 http://archive.openflow.org/wk/index.php/Pantou_:_OpenFlow_1.0_for_OpenWRT
 
