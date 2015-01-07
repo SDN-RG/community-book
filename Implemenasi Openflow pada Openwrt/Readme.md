@@ -593,10 +593,15 @@ hasil lengkap pengujian anda dapat lihat pada file berikut:
 
 Referensi:
 http://archive.openflow.org/wk/index.php/Pantou_:_OpenFlow_1.0_for_OpenWRT
+
 https://github.com/CPqD/openflow-openwrt
+
 http://openvswitch.org/
+
 https://github.com/pichuang/openvwrt
+
 http://wiki.openwrt.org/toh/tp-link/tl-wr1043nd
+
 http://vishalshahane.blogspot.com/2014/04/compiling-custom-firmware-for-wireless.html
 
 
