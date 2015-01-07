@@ -77,6 +77,7 @@ make V=s
 Anda dapat menggunakan openflow versi 1.0 (standford) dengan mengikuti langkah 5.1.A atau menggunakan openflow versi 1.3 (CPqD) dengan mengikuti langkah 5.1.B atau menggunakan Open vSwitch 2.3.0 (Roan Huang) dengan mengikuti langkah 5.2.
 
 ####5.1.A Untuk menambahkan package openflow versi 1.0 (standford) ikuti langkah berikut :
+
 ```
 cd ~/ofwrt/
 git clone git://gitosis.stanford.edu/openflow-openwrt
@@ -85,28 +86,35 @@ ln -s ~/ofwrt/openflow-openwrt/openflow-1.0/
 cd ~/ofwrt/barrier_breaker/
 ln -s ~/ofwrt/openflow-openwrt/openflow-1.0/files
 ```
+
 #####5.1.A.1 Konfigurasi package openflow dan package yang dibutuhkan oleh openflow.
+
+```
 ```
 cd ~/ofwrt/barrier_breaker
-make menuconfig```
+make menuconfig
+```
 
 * Pada menu menu network pilih **openflow**
 * Pada menu Kernel Modules->Network Support pilih **kmod-tun** dan **kmod-sched-core & kmod-sched**
 * Save dan exit
 
 #####5.1.A.2 Konfigurasi kernel agar support queueing
+
 ```
 make kernel_menuconfig
 ```
+
 * Pada menu Networking Support->Networking options-> pilih **Hierarchical Token Bucket (HTB)**
 * Save dan exit
 
 #####5.1.A.3 Kemudian lakukan proses build, proses ini cukup memakan waktu. Pastikan anda terhubung dengan internet dan tidak terjadi build error.
+
 ```
 make prereq
 make V=s
-
 ```
+
 #####5.1.A.4 Setelah berhasil anda akan mendapatkan firmware Openwrt dengan custom package openflow 1.0
 Hasil dari proses build ini adalah firmware openwrt dengan custom package openflow 1.0 untuk TP-Link TL-1043ND yang berada pada folder  **/ofwrt/barrier_breaker/bin/ar71xx$**
 
@@ -143,7 +151,8 @@ ln -s ~/ofwrt/openflow-openwrt/openflow-1.3/files
 #####5.1.B.1 Konfigurasi package openflow dan package yang dibutuhkan oleh openflow.
 ```
 cd ~/ofwrt/barrier_breaker
-make menuconfig```
+make menuconfig
+```
 
 * Pada menu menu network pilih **openflow**
 * Pada menu Kernel Modules->Network Support pilih **kmod-tun** dan **kmod-sched-core & kmod-sched**
@@ -199,7 +208,8 @@ wget https://gist.githubusercontent.com/pichuang/7372af6d5d3bd1db5a88/raw/4e2290
 #####5.2.1 Konfigurasi package Open vSwitch dan package yang dibutuhkan oleh Open vSwitch.
 ```
 cd ~/ofwrt/barrier_breaker
-make menuconfig```
+make menuconfig
+```
 
 * Pada menu network pilih **openvswitch-common, openvswitch-switch** dan **openvswitch-ipsec (Optional)**
 * Pada menu  Advanced configuration options (for developers) -> Toolchain Options -> Binutils Version -> pilih **Linaro binutils 2.24**
@@ -429,7 +439,7 @@ ovs-vsctl set-controller ovs-br tcp:192.168.77.30:6633
 
 ####Hasil pengujian implementasi metode Pantou/CPqD
 
-Ethernet0.1 - Ethernet 0.2
+#####Ethernet0.1 - Ethernet 0.2
 ```
 havid@havid-MS-7756:~$ ping 10.1.1.2 -c 5
 PING 10.1.1.2 (10.1.1.2) 56(84) bytes of data.
@@ -458,7 +468,7 @@ TCP window size: 85.3 KByte (default)
 [  5] local 10.1.1.1 port 5001 connected with 10.1.1.2 port 33816
 [  5]  0.0-10.1 sec  38.2 MBytes  31.9 Mbits/sec
 ```
-Wlan0 - Ethernet 0.2
+#####Wlan0 - Ethernet 0.2
 
 ```
 havid@havid-MS-7756:~$ ping 10.1.1.3 -c 5
@@ -494,13 +504,13 @@ TCP window size: 85.3 KByte (default)
 
 hasil lengkap pengujian anda dapat lihat pada file berikut:
 
-Dokumentasi Pantou
-Dokumentasi  CPqD
+[Dokumentasi Pantou](https://raw.githubusercontent.com/saleh-havid/community-book/master/Implemenasi%20Openflow%20pada%20Openwrt/Assets/Dokumentasi%20Pantou.txt)
+[Dokumentasi  CPqD](https://raw.githubusercontent.com/saleh-havid/community-book/master/Implemenasi%20Openflow%20pada%20Openwrt/Assets/Dokumentasi%20%20CPqD.txt)
 
 
 ####Hasil pengujian implementasi metode Open vSwitch
 
-Ethernet0.1 - Ethernet 0.2
+#####Ethernet0.1 - Ethernet 0.2
 ```
 havid@havid-MS-7756:~$ ping 10.1.1.2 -c 5
 PING 10.1.1.2 (10.1.1.2) 56(84) bytes of data.
@@ -528,7 +538,7 @@ TCP window size: 85.3 KByte (default)
 [  4] local 10.1.1.1 port 5001 connected with 10.1.1.2 port 52150
 [  4]  0.0-10.0 sec   615 MBytes   514 Mbits/sec
 ```
-Wlan0 - Ethernet 0.2
+#####Wlan0 - Ethernet 0.2
 ```
 havid@havid-MS-7756:~$ ping 10.1.1.3 -c 5
 PING 10.1.1.3 (10.1.1.3) 56(84) bytes of data.
@@ -563,7 +573,7 @@ TCP window size: 85.3 KByte (default)
 
 hasil lengkap pengujian anda dapat lihat pada file berikut:
 
-Dokumentasi Open vSwitch
+[Dokumentasi Open vSwitch](https://raw.githubusercontent.com/saleh-havid/community-book/master/Implemenasi%20Openflow%20pada%20Openwrt/Assets/Dokumentasi%20OvS.txt)
 
 Referensi:
 http://archive.openflow.org/wk/index.php/Pantou_:_OpenFlow_1.0_for_OpenWRT
